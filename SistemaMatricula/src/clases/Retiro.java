@@ -16,12 +16,6 @@ public class Retiro {
 	}
     //GET Y SET
 	
-	
-	
-	// holaaaaaaa
-   
-	//dsnsqhsqlsjnfsdlelnfklsdwnsdfnkdwfnldwkfn
-	
 	public int getNumRetiro() {
 		return numRetiro;
 	}

@@ -1,10 +1,5 @@
 package clases;
-//HOLA
-//ECLIPSE
-public class Alumno {
-	
-	// hola me llamo yeison
-	
+public class Alumno {	
 	// atributos
 	
 	private int codAlumno;

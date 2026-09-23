@@ -53,7 +53,7 @@ public class FrmMatricula extends JFrame {
 	 * Create the frame.
 	 */
 	public FrmMatricula() {
-		setTitle("Registro - Matrícula}");
+		setTitle("Registro - Matrícula");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 780, 480);
 		contentPane = new JPanel();

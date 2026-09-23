@@ -2,6 +2,8 @@ package clases;
 
 public class Alumno {
 	
+	// hola me llamo yeison
+	
 	// atributos
 	
 	private int codAlumno;

@@ -15,6 +15,13 @@ public class Retiro {
 		this.hora = hora;
 	}
     //GET Y SET
+	
+	
+	
+	// holaaaaaaa
+   
+	//dsnsqhsqlsjnfsdlelnfklsdwnsdfnkdwfnldwkfn
+	
 	public int getNumRetiro() {
 		return numRetiro;
 	}

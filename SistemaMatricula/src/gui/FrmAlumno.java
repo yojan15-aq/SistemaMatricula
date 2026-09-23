@@ -14,7 +14,6 @@ import javax.swing.JButton;
 
 public class FrmAlumno extends JFrame {
 //hola
-	//lol s
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblcodigo;

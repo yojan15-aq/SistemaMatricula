@@ -19,17 +19,8 @@ public class Retiro {
 	
 	
 	// holaaaaaaa
-	
-	
-	
-	
-	
-	
-	
-	
-	//tyhrhrgfhgfrhrfhrgfhgfrhgrf
-	
-	
+   
+	//dsnsqhsqlsjnfsdlelnfklsdwnsdfnkdwfnldwkfn
 	
 	public int getNumRetiro() {
 		return numRetiro;

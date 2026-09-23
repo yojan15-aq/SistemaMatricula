@@ -13,7 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 
 public class FrmAlumno extends JFrame {
-//hola
+//hola ss
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblcodigo;

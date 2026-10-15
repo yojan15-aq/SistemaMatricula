@@ -1,4 +1,7 @@
 package clases;
+
+import arreglos.ArrayAlumnos;
+
 public class Alumno {	
 	// atributos
 	
@@ -9,6 +12,8 @@ public class Alumno {
 	private int edad;
 	private int celular;
 	private int estado;
+	
+	public static int contadorAlumnos = 202610001; // Variable estática para llevar el conteo de alumnos
 	
 	//constructor 
 	public Alumno(int codAlumno, String nombres, String apellidos, String dni, int edad, int celular, int estado) {
@@ -21,7 +26,15 @@ public class Alumno {
 		this.celular = celular;
 		this.estado = estado;
 	}
-
+	
+	// generar codigo correlativo
+	public static int generarCodigoAlumno() {
+		int auxiliar = contadorAlumnos;
+		contadorAlumnos += 1;
+		return auxiliar;
+	}
+//	public static int 
+	
 	//get y set
 	public int getCodAlumno() {
 		return codAlumno;

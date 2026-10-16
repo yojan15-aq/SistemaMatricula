@@ -82,17 +82,17 @@ public class ArrayCursos {
 					cur.getHoras(),
 				});
 			});
-//		alumnos.forEach(a -> {
-//			t.addRow(new Object[] {
-//				a.getCodAlumno(),
-//				a.getNombres(),
-//				a.getApellidos(),
-//				a.getDni(),
-//				a.getEdad(),
-//				a.getCelular(),
-//				a.getEstado(),
-//			});
-//		});
+
+	}
+	public String[] getArrayCodCursos() {
+		String[] cursos = new String[this.cursos.size()];
+		
+		
+		for (int i=0; i < this.cursos.size(); i++) {
+			cursos[i] = this.cursos.stream().map(a -> a.getCodCurso()).toArray()[i] + "";
+		}
+		
+		return cursos;
 	}
 
 }

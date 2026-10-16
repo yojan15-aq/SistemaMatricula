@@ -181,6 +181,7 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		contentPane.add(btnAdicionar);
 
 		btnConsultar = new JButton("Consultar");
+		btnConsultar.addActionListener(this);
 		btnConsultar.setBounds(160, 400, 130, 30);
 		contentPane.add(btnConsultar);
 
@@ -200,6 +201,9 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == btnConsultar) {
+			actionPerformedBtnConsultar(e);
+		}
 		if (e.getSource() == btnEliminar) {
 			actionPerformedBtnEliminar(e);
 		}
@@ -354,4 +358,25 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		alumnos.mostrarEnTabla(tmodel);
 	}
 	
+	protected void actionPerformedBtnConsultar(ActionEvent e) {
+		JComboBox cbo = new JComboBox();
+		cbo.setEnabled(true);
+		cbo.setEditable(true);
+//		cbo
+		cbo.setModel(new DefaultComboBoxModel(alumnos.getArrayCodAlumnos()));
+		cbo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		int cod = Mensaje.consultarAlumno(this, cbo);
+		if (cod == -1) return;
+		
+		Alumno a = alumnos.buscarAlumnoPorCodigo(cod);
+		Mensaje.dialog(this,
+				"Codigo: " + a.getCodAlumno() +
+				"\nNombres: " + a.getNombres() +
+				"\nApellidos: " + a.getApellidos() +
+				"\nDNI: " + a.getDni() +
+				"\nEdad: " + a.getEdad() +
+				"\nCelular: " + a.getCelular() +
+				"\nEstado: " + a.getCelular());
+	}
 }

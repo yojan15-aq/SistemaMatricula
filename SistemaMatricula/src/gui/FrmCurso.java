@@ -292,24 +292,22 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 		cursos.mostrarEnTabla(tmodel);
 	}
 	protected void actionPerformedBtnConsultar(ActionEvent e) {
-
-//		int codCurso;
-//		try {
-//			codCurso = Integer.parseInt(txtCodCurso.getText());
-//		} catch (Exception e2) {
-//			Mensaje.alerta(
-//					this, 
-//					"Debe ingresar un código válido",
-//					"Error en el campo de texto"
-//					);
-//			return;
-//		}
-//		// mostrar el curso en los campos de texto
-//		Curso curso = cursos.buscarCursoPorCodigo(codCurso);
-//		
-//		
-//		
-//		
-//		
+		JComboBox cbo = new JComboBox();
+		cbo.setEnabled(true);
+		cbo.setEditable(true);
+//		cbo
+		cbo.setModel(new DefaultComboBoxModel(cursos.getArrayCodCursos()));
+		cbo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		int cod = Mensaje.consultarAlumno(this, cbo);
+		if (cod == -1) return;
+		
+		Curso a = cursos.buscarCursoPorCodigo(cod);
+		Mensaje.dialog(this,
+				"Codigo: " + a.getCodCurso() +
+				"\nAsignatura: " + a.getAsignatura() +
+				"\nCiclo: " +  cursos.cicloToText(a.getCiclo())+
+				"\nCreditos: " + a.getCreditos() +
+				"\nHoras: " + a.getHoras() );
 	}
 }

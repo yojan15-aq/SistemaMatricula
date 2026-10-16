@@ -79,4 +79,13 @@ public class ArrayAlumnos {
 			});
 		});
 	}
+	public String[] getArrayCodAlumnos() {
+		String[] alumnos = new String[this.alumnos.size()];
+		
+		for (int i=0; i < this.alumnos.size(); i++) {
+			alumnos[i] = this.alumnos.stream().map(a -> a.getCodAlumno()).toArray()[i] + "";
+		}
+		
+		return alumnos;
+	}
 }

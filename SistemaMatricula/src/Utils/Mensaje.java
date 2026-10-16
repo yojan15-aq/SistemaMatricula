@@ -2,6 +2,7 @@ package Utils;
 
 import java.awt.Component;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 public class Mensaje {
@@ -16,5 +17,18 @@ public class Mensaje {
 	}
 	public static void alerta(Component c, String mensaje, String titulo) {
 		JOptionPane.showMessageDialog(c, mensaje, titulo, JOptionPane.WARNING_MESSAGE);
+	}
+	public static int consultarAlumno(Component c, JComboBox cbo) {
+		 int res = JOptionPane.showConfirmDialog(
+				c,
+				cbo,
+				"Selecciona un alumno",
+				JOptionPane.OK_CANCEL_OPTION);
+		System.out.println(res);
+		System.out.println(cbo.getSelectedItem());
+		if (res == JOptionPane.OK_OPTION) {
+			return Integer.parseInt(cbo.getSelectedItem() + "");
+		}
+		return -1;
 	}
 }

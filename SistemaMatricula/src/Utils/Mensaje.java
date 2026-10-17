@@ -24,8 +24,8 @@ public class Mensaje {
 				cbo,
 				"Selecciona un alumno",
 				JOptionPane.OK_CANCEL_OPTION);
-		System.out.println(res);
-		System.out.println(cbo.getSelectedItem());
+	//	System.out.println(res);
+	//	System.out.println(cbo.getSelectedItem());
 		if (res == JOptionPane.OK_OPTION) {
 			return Integer.parseInt(cbo.getSelectedItem() + "");
 		}

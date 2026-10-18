@@ -1,12 +1,11 @@
 package arreglos;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 
-import clases.Alumno;
 import clases.Curso;
 
 public class ArrayCursos {

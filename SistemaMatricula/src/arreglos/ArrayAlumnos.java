@@ -6,7 +6,6 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 import clases.Alumno;
-import clases.Curso;
 
 public class ArrayAlumnos {
 	private List<Alumno> alumnos = new ArrayList<>();

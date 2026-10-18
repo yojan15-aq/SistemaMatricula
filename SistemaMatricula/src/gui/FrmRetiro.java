@@ -1,11 +1,13 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import Utils.Mensaje;
+import clases.Matricula;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -18,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
 
 public class FrmRetiro extends JFrame implements ActionListener {
 
@@ -28,10 +31,10 @@ public class FrmRetiro extends JFrame implements ActionListener {
 	private JLabel lblNumMatricula;
 	private JTextField txtNumMatricula;
 	private JLabel lblFecha;
-	private JTextField txtCreditos;
+	private JTextField txtFecha;
 	private JLabel lblHora;
 	private JTextField txtHora;
-	private JTable tblAlumnos;
+	private JTable tblRetiros;
 	private JButton btnAdicionar;
 	private JButton btnConsultar;
 	private JButton btnEliminar;
@@ -58,53 +61,71 @@ public class FrmRetiro extends JFrame implements ActionListener {
 		setTitle("Registro - Retiro");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 780, 480);
+
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(40, 40, 45));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		lblNumRetiro = new JLabel("Número de retiro");
-		lblNumRetiro.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNumRetiro.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		lblNumRetiro.setForeground(Color.WHITE);
 		lblNumRetiro.setBounds(10, 0, 189, 37);
 		contentPane.add(lblNumRetiro);
 
 		txtNumRetiro = new JTextField();
 		txtNumRetiro.setEditable(false);
-		txtNumRetiro.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtNumRetiro.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		txtNumRetiro.setBackground(new Color(55, 55, 60));
+		txtNumRetiro.setForeground(Color.WHITE);
+		txtNumRetiro.setCaretColor(Color.WHITE);
+		txtNumRetiro.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
 		txtNumRetiro.setBounds(10, 32, 189, 27);
 		contentPane.add(txtNumRetiro);
-		txtNumRetiro.setColumns(10);
 
-		lblNumMatricula = new JLabel("Numero de matrícula");
-		lblNumMatricula.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNumMatricula = new JLabel("Número de matrícula");
+		lblNumMatricula.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		lblNumMatricula.setForeground(Color.WHITE);
 		lblNumMatricula.setBounds(10, 60, 189, 27);
 		contentPane.add(lblNumMatricula);
 
 		txtNumMatricula = new JTextField();
-		txtNumMatricula.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtNumMatricula.setColumns(10);
+		txtNumMatricula.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		txtNumMatricula.setBackground(new Color(55, 55, 60));
+		txtNumMatricula.setForeground(Color.WHITE);
+		txtNumMatricula.setCaretColor(Color.WHITE);
+		txtNumMatricula.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
 		txtNumMatricula.setBounds(10, 88, 189, 27);
 		contentPane.add(txtNumMatricula);
 
 		lblFecha = new JLabel("Fecha");
-		lblFecha.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblFecha.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		lblFecha.setForeground(Color.WHITE);
 		lblFecha.setBounds(10, 113, 189, 27);
 		contentPane.add(lblFecha);
 
-		txtCreditos = new JTextField();
-		txtCreditos.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtCreditos.setColumns(10);
-		txtCreditos.setBounds(10, 137, 189, 27);
-		contentPane.add(txtCreditos);
+		txtFecha = new JTextField();
+		txtFecha.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		txtFecha.setBackground(new Color(55, 55, 60));
+		txtFecha.setForeground(Color.WHITE);
+		txtFecha.setCaretColor(Color.WHITE);
+		txtFecha.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
+		txtFecha.setBounds(10, 137, 189, 27);
+		contentPane.add(txtFecha);
 
 		lblHora = new JLabel("Hora");
-		lblHora.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblHora.setFont(new Font("Segoe UI", Font.BOLD, 15));
+		lblHora.setForeground(Color.WHITE);
 		lblHora.setBounds(10, 164, 189, 27);
 		contentPane.add(lblHora);
 
 		txtHora = new JTextField();
-		txtHora.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtHora.setColumns(10);
+		txtHora.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		txtHora.setBackground(new Color(55, 55, 60));
+		txtHora.setForeground(Color.WHITE);
+		txtHora.setCaretColor(Color.WHITE);
+		txtHora.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
 		txtHora.setBounds(10, 187, 189, 27);
 		contentPane.add(txtHora);
 
@@ -119,27 +140,50 @@ public class FrmRetiro extends JFrame implements ActionListener {
 			}
 		};
 		tmodel.setColumnIdentifiers(new String[] {"N° retiro", "N° matrícula", "Fecha", "Hora"});
-		tblAlumnos = new JTable(tmodel);
-		scrollPane.setViewportView(tblAlumnos);
+		tblRetiros = new JTable(tmodel);
+		tblRetiros.setBackground(new Color(50, 50, 55));
+		tblRetiros.setForeground(Color.WHITE);
+		tblRetiros.setGridColor(new Color(70, 70, 75));
+		tblRetiros.setSelectionBackground(new Color(33, 150, 243));
+		tblRetiros.setSelectionForeground(Color.WHITE);
+		tblRetiros.getTableHeader().setBackground(new Color(60, 60, 65));
+		tblRetiros.getTableHeader().setForeground(Color.WHITE);
+		scrollPane.setViewportView(tblRetiros);
 
 		btnAdicionar = new JButton("Adicionar");
-		btnAdicionar.setBounds(20, 400, 130, 30);
+		btnAdicionar.setBackground(new Color(46, 125, 50));
+		btnAdicionar.setForeground(Color.WHITE);
+		btnAdicionar.setFocusPainted(false);
+		btnAdicionar.setBorderPainted(false);
 		btnAdicionar.addActionListener(this);
+		btnAdicionar.setBounds(20, 400, 130, 32);
 		contentPane.add(btnAdicionar);
 
 		btnConsultar = new JButton("Consultar");
-		btnConsultar.setBounds(160, 400, 130, 30);
+		btnConsultar.setBackground(new Color(33, 150, 243));
+		btnConsultar.setForeground(Color.WHITE);
+		btnConsultar.setFocusPainted(false);
+		btnConsultar.setBorderPainted(false);
 		btnConsultar.addActionListener(this);
+		btnConsultar.setBounds(160, 400, 130, 32);
 		contentPane.add(btnConsultar);
 
 		btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(300, 400, 130, 30);
+		btnEliminar.setBackground(new Color(198, 40, 40));
+		btnEliminar.setForeground(Color.WHITE);
+		btnEliminar.setFocusPainted(false);
+		btnEliminar.setBorderPainted(false);
 		btnEliminar.addActionListener(this);
+		btnEliminar.setBounds(300, 400, 130, 32);
 		contentPane.add(btnEliminar);
 
 		btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.setBounds(440, 400, 130, 30);
+		btnLimpiar.setBackground(new Color(96, 125, 139));
+		btnLimpiar.setForeground(Color.WHITE);
+		btnLimpiar.setFocusPainted(false);
+		btnLimpiar.setBorderPainted(false);
 		btnLimpiar.addActionListener(this);
+		btnLimpiar.setBounds(440, 400, 130, 32);
 		contentPane.add(btnLimpiar);
 
 		txtNumRetiro.setText(contador + "");
@@ -156,7 +200,7 @@ public class FrmRetiro extends JFrame implements ActionListener {
 
 	protected void actionPerformedBtnAdicionar(ActionEvent e) {
 		String numMatricula = txtNumMatricula.getText().trim();
-		String fecha = txtCreditos.getText().trim();
+		String fecha = txtFecha.getText().trim();
 		String hora = txtHora.getText().trim();
 
 		if (numMatricula.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
@@ -164,6 +208,21 @@ public class FrmRetiro extends JFrame implements ActionListener {
 			return;
 		}
 
+		// Verificar que la matrícula exista en FrmMenu
+		boolean existeMatricula = false;
+		for (Matricula m : FrmMenu.listaMatriculas) {
+			if (String.valueOf(m.getNumMatricula()).equals(numMatricula)) {
+				existeMatricula = true;
+				break;
+			}
+		}
+
+		if (!existeMatricula) {
+			Mensaje.dialog(this, "El número de matrícula no existe");
+			return;
+		}
+
+		// Registrar el retiro
 		String num = contador + "";
 		listaRetiros.add(new String[]{num, numMatricula, fecha, hora});
 		tmodel.addRow(new Object[]{num, numMatricula, fecha, hora});
@@ -179,21 +238,15 @@ public class FrmRetiro extends JFrame implements ActionListener {
 			return;
 		}
 
-		JComboBox cbo = new JComboBox();
+		JComboBox<String> cbo = new JComboBox<>();
 		for (String[] r : listaRetiros) {
 			cbo.addItem(r[0]);
 		}
 
-		int res = JOptionPane.showConfirmDialog(
-				this,
-				cbo,
-				"Selecciona un retiro",
-				JOptionPane.OK_CANCEL_OPTION);
-
+		int res = JOptionPane.showConfirmDialog(this, cbo, "Selecciona un retiro", JOptionPane.OK_CANCEL_OPTION);
 		if (res != JOptionPane.OK_OPTION) return;
 
 		String numSeleccionado = cbo.getSelectedItem().toString();
-
 		for (String[] r : listaRetiros) {
 			if (r[0].equals(numSeleccionado)) {
 				Mensaje.dialog(this,
@@ -207,7 +260,7 @@ public class FrmRetiro extends JFrame implements ActionListener {
 	}
 
 	protected void actionPerformedBtnEliminar(ActionEvent e) {
-		int rowIndex = tblAlumnos.getSelectedRow();
+		int rowIndex = tblRetiros.getSelectedRow();
 		if (rowIndex == -1) {
 			Mensaje.dialog(this, "Primero selecciona un retiro de la tabla");
 			return;
@@ -223,7 +276,7 @@ public class FrmRetiro extends JFrame implements ActionListener {
 	private void limpiarCampos() {
 		txtNumRetiro.setText(contador + "");
 		txtNumMatricula.setText("");
-		txtCreditos.setText("");
+		txtFecha.setText("");
 		txtHora.setText("");
 	}
 

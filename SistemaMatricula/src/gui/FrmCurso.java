@@ -8,9 +8,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Utils.Mensaje;
-import arreglos.ArrayCursos;
-import clases.Alumno;
 import clases.Curso;
+import java.awt.Color;
+import javax.swing.BorderFactory;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -35,7 +35,7 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 	private JLabel lblAsignatura;
 	private JTextField txtAsignatura;
 	private JLabel lblCiclo;
-	private JComboBox cboCiclo;
+	private JComboBox<String> cboCiclo;
 	private JLabel lblCreditos;
 	private JTextField txtCreditos;
 	private JLabel lblHoras;
@@ -68,107 +68,156 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 	 * Create the frame.
 	 */
 	public FrmCurso() {
-		setTitle("Mantenimiento - Curso");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 780, 480);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		lblcodCurso = new JLabel("Código");
-		lblcodCurso.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblcodCurso.setBounds(10, 0, 189, 37);
-		contentPane.add(lblcodCurso);
-		
-		txtCodCurso = new JTextField();
-		txtCodCurso.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtCodCurso.setBounds(10, 32, 189, 27);
-		contentPane.add(txtCodCurso);
-		txtCodCurso.setColumns(10);
-		
-		lblAsignatura = new JLabel("Asignatura");
-		lblAsignatura.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblAsignatura.setBounds(10, 60, 189, 27);
-		contentPane.add(lblAsignatura);
-		
-		lblCiclo = new JLabel("Ciclo");
-		lblCiclo.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblCiclo.setBounds(10, 115, 189, 27);
-		contentPane.add(lblCiclo);
-		
-		txtAsignatura = new JTextField();
-		txtAsignatura.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtAsignatura.setColumns(10);
-		txtAsignatura.setBounds(10, 88, 189, 27);
-		contentPane.add(txtAsignatura);
-		
-		cboCiclo = new JComboBox();
-		cboCiclo.setModel(new DefaultComboBoxModel(new String[] {"Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto"}));
-		cboCiclo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		cboCiclo.setBounds(10, 139, 189, 27);
-		contentPane.add(cboCiclo);
-		
-		lblCreditos = new JLabel("Créditos");
-		lblCreditos.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblCreditos.setBounds(10, 165, 189, 27);
-		contentPane.add(lblCreditos);
-		
-		txtCreditos = new JTextField();
-		txtCreditos.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtCreditos.setColumns(10);
-		txtCreditos.setBounds(10, 187, 189, 27);
-		contentPane.add(txtCreditos);
-		
-		lblHoras = new JLabel("Horas");
-		lblHoras.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblHoras.setBounds(10, 214, 189, 27);
-		contentPane.add(lblHoras);
-		
-		txtHoras =  new JTextField();
-		txtHoras.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtHoras.setColumns(10);
-		txtHoras.setBounds(10, 238, 189, 27);
-		contentPane.add(txtHoras);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(220, 20, 520, 340);
-		contentPane.add(scrollPane);
+	    setTitle("Mantenimiento - Curso");
+	    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	    setBounds(100, 100, 780, 480);
 
-		
-		String[] columnas = { "Código", "Asignatura", "Ciclo", "Créditos", "Horas" };
-		tmodel = new DefaultTableModel();
-		tmodel.setColumnIdentifiers(columnas);
-		tblCursos = new JTable(tmodel);
-		scrollPane.setViewportView(tblCursos);
-//		tblAlumnos.setModel(new javax.swing.table.DefaultTableModel(
-//			new Object[][] {},
-//			new String[] { "Código", "Asignatura", "Ciclo", "Créditos", "Horas" }
-//		));
-		
-		btnAdicionar = new JButton("Adicionar");
-		btnAdicionar.addActionListener(this);
-		btnAdicionar.setBounds(20, 400, 130, 30);
-		contentPane.add(btnAdicionar);
+	    contentPane = new JPanel();
+	    contentPane.setBackground(new Color(40, 40, 45));
+	    contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+	    setContentPane(contentPane);
+	    contentPane.setLayout(null);
 
-		btnConsultar = new JButton("Consultar");
-		btnConsultar.addActionListener(this);
-		btnConsultar.setBounds(160, 400, 130, 30);
-		contentPane.add(btnConsultar);
+	    // Código
+	    lblcodCurso = new JLabel("Código");
+	    lblcodCurso.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	    lblcodCurso.setForeground(Color.WHITE);
+	    lblcodCurso.setBounds(10, 0, 189, 37);
+	    contentPane.add(lblcodCurso);
 
-		btnModificar = new JToggleButton("Modificar");
-		btnModificar.addItemListener(this);
-		btnModificar.setBounds(300, 400, 130, 30);
-		contentPane.add(btnModificar);
+	    txtCodCurso = new JTextField();
+	    txtCodCurso.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+	    txtCodCurso.setBackground(new Color(55, 55, 60));
+	    txtCodCurso.setForeground(Color.WHITE);
+	    txtCodCurso.setCaretColor(Color.WHITE);
+	    txtCodCurso.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
+	    txtCodCurso.setBounds(10, 32, 189, 27);
+	    contentPane.add(txtCodCurso);
 
-		btnEliminar = new JButton("Eliminar");
-		btnEliminar.addActionListener(this);
-		btnEliminar.setBounds(440, 400, 130, 30);
-		contentPane.add(btnEliminar);
-		
-//		generarCursosPrueba();
-		FrmMenu.arrCursos.mostrarEnTabla(tmodel);
+	    // Asignatura
+	    lblAsignatura = new JLabel("Asignatura");
+	    lblAsignatura.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	    lblAsignatura.setForeground(Color.WHITE);
+	    lblAsignatura.setBounds(10, 60, 189, 27);
+	    contentPane.add(lblAsignatura);
 
+	    txtAsignatura = new JTextField();
+	    txtAsignatura.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+	    txtAsignatura.setBackground(new Color(55, 55, 60));
+	    txtAsignatura.setForeground(Color.WHITE);
+	    txtAsignatura.setCaretColor(Color.WHITE);
+	    txtAsignatura.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
+	    txtAsignatura.setBounds(10, 88, 189, 27);
+	    contentPane.add(txtAsignatura);
+
+	    // Ciclo
+	    lblCiclo = new JLabel("Ciclo");
+	    lblCiclo.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	    lblCiclo.setForeground(Color.WHITE);
+	    lblCiclo.setBounds(10, 115, 189, 27);
+	    contentPane.add(lblCiclo);
+
+	    cboCiclo = new JComboBox<>();
+	    cboCiclo.setModel(new DefaultComboBoxModel<>(new String[] {"Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto"}));
+	    cboCiclo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+	    cboCiclo.setBackground(new Color(55, 55, 60));
+	    cboCiclo.setForeground(Color.WHITE);
+	    cboCiclo.setBounds(10, 139, 189, 27);
+	    contentPane.add(cboCiclo);
+
+	    // Créditos
+	    lblCreditos = new JLabel("Créditos");
+	    lblCreditos.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	    lblCreditos.setForeground(Color.WHITE);
+	    lblCreditos.setBounds(10, 165, 189, 27);
+	    contentPane.add(lblCreditos);
+
+	    txtCreditos = new JTextField();
+	    txtCreditos.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+	    txtCreditos.setBackground(new Color(55, 55, 60));
+	    txtCreditos.setForeground(Color.WHITE);
+	    txtCreditos.setCaretColor(Color.WHITE);
+	    txtCreditos.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
+	    txtCreditos.setBounds(10, 187, 189, 27);
+	    contentPane.add(txtCreditos);
+
+	    // Horas
+	    lblHoras = new JLabel("Horas");
+	    lblHoras.setFont(new Font("Segoe UI", Font.BOLD, 15));
+	    lblHoras.setForeground(Color.WHITE);
+	    lblHoras.setBounds(10, 214, 189, 27);
+	    contentPane.add(lblHoras);
+
+	    txtHoras = new JTextField();
+	    txtHoras.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+	    txtHoras.setBackground(new Color(55, 55, 60));
+	    txtHoras.setForeground(Color.WHITE);
+	    txtHoras.setCaretColor(Color.WHITE);
+	    txtHoras.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
+	    txtHoras.setBounds(10, 238, 189, 27);
+	    contentPane.add(txtHoras);
+
+	    // Tabla
+	    JScrollPane scrollPane = new JScrollPane();
+	    scrollPane.setBounds(220, 20, 520, 340);
+	    contentPane.add(scrollPane);
+
+	    String[] columnas = { "Código", "Asignatura", "Ciclo", "Créditos", "Horas" };
+	    tmodel = new DefaultTableModel() {
+	        @Override
+	        public boolean isCellEditable(int row, int column) {
+	            return false;
+	        }
+	    };
+	    tmodel.setColumnIdentifiers(columnas);
+	    tblCursos = new JTable(tmodel);
+	    tblCursos.setBackground(new Color(50, 50, 55));
+	    tblCursos.setForeground(Color.WHITE);
+	    tblCursos.setGridColor(new Color(70, 70, 75));
+	    tblCursos.setSelectionBackground(new Color(33, 150, 243));
+	    tblCursos.setSelectionForeground(Color.WHITE);
+	    tblCursos.getTableHeader().setBackground(new Color(60, 60, 65));
+	    tblCursos.getTableHeader().setForeground(Color.WHITE);
+	    scrollPane.setViewportView(tblCursos);
+
+	    // Botones
+	    btnAdicionar = new JButton("Adicionar");
+	    btnAdicionar.setBackground(new Color(46, 125, 50));
+	    btnAdicionar.setForeground(Color.WHITE);
+	    btnAdicionar.setFocusPainted(false);
+	    btnAdicionar.setBorderPainted(false);
+	    btnAdicionar.addActionListener(this);
+	    btnAdicionar.setBounds(20, 400, 130, 32);
+	    contentPane.add(btnAdicionar);
+
+	    btnConsultar = new JButton("Consultar");
+	    btnConsultar.setBackground(new Color(33, 150, 243));
+	    btnConsultar.setForeground(Color.WHITE);
+	    btnConsultar.setFocusPainted(false);
+	    btnConsultar.setBorderPainted(false);
+	    btnConsultar.addActionListener(this);
+	    btnConsultar.setBounds(160, 400, 130, 32);
+	    contentPane.add(btnConsultar);
+
+	    btnModificar = new JToggleButton("Modificar");
+	    btnModificar.setBackground(new Color(255, 152, 0));
+	    btnModificar.setForeground(Color.WHITE);
+	    btnModificar.setFocusPainted(false);
+	    btnModificar.setBorderPainted(false);
+	    btnModificar.addItemListener(this);
+	    btnModificar.setBounds(300, 400, 130, 32);
+	    contentPane.add(btnModificar);
+
+	    btnEliminar = new JButton("Eliminar");
+	    btnEliminar.setBackground(new Color(198, 40, 40));
+	    btnEliminar.setForeground(Color.WHITE);
+	    btnEliminar.setFocusPainted(false);
+	    btnEliminar.setBorderPainted(false);
+	    btnEliminar.addActionListener(this);
+	    btnEliminar.setBounds(440, 400, 130, 32);
+	    contentPane.add(btnEliminar);
+
+	    FrmMenu.arrCursos.mostrarEnTabla(tmodel);
 	}
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnConsultar) {
@@ -284,11 +333,10 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 	// generrar 5 cursos de prueba
 	
 	protected void actionPerformedBtnConsultar(ActionEvent e) {
-		JComboBox cbo = new JComboBox();
+		JComboBox<String> cbo = new JComboBox<>();
 		cbo.setEnabled(true);
 		cbo.setEditable(true);
-//		cbo
-		cbo.setModel(new DefaultComboBoxModel(FrmMenu.arrCursos.getArrayCodCursos()));
+		cbo.setModel(new DefaultComboBoxModel<>(FrmMenu.arrCursos.getArrayCodCursos()));
 		cbo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		int cod = Mensaje.consultarAlumno(this, cbo);

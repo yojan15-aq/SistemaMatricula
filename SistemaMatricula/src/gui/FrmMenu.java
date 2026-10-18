@@ -19,6 +19,7 @@ import clases.Alumno;
 import clases.Curso;
 import clases.Matricula;
 
+@SuppressWarnings("serial")
 public class FrmMenu extends JFrame {
 	public static ArrayAlumnos arrAlumnos = new ArrayAlumnos();
 	public static ArrayCursos arrCursos = new ArrayCursos();
@@ -81,12 +82,33 @@ public class FrmMenu extends JFrame {
     }
 
     private JButton crearBoton(String texto, Color color) {
-        JButton btn = new JButton(texto);
+        JButton btn = new JButton(texto) {
+            @Override
+            protected void paintComponent(java.awt.Graphics g) {
+                java.awt.Graphics2D g2 = (java.awt.Graphics2D) g.create();
+                g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+
+                // Color más claro si el mouse está encima
+                if (getModel().isRollover()) {
+                    g2.setColor(color.brighter());
+                } else {
+                    g2.setColor(color);
+                }
+
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+                g2.dispose();
+
+                super.paintComponent(g);
+            }
+        };
+
         btn.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btn.setBackground(color);
         btn.setForeground(Color.WHITE);
+        btn.setContentAreaFilled(false);
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
         return btn;
     }
 

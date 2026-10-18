@@ -1,6 +1,6 @@
 package clases;
 
-import arreglos.ArrayAlumnos;
+
 
 public class Alumno {	
 	// atributos

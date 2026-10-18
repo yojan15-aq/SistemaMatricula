@@ -19,26 +19,26 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JToggleButton;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
-public class FrmMatricula extends JFrame implements ActionListener {
+public class FrmMatricula extends JFrame implements ActionListener, ItemListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblNumMatricula;
 	private JTextField txtNumMatricula;
 	private JLabel lblCodAlum;
-	private JTextField txtCodAlum;
+	private JComboBox cboCodAlum;
 	private JLabel lblCodCurso;
-	private JTextField txtCodCurso;
-	private JLabel lblFecha;
-	private JTextField txtFecha;
-	private JLabel lblHora;
-	private JTextField txtHora;
+	private JComboBox cboCodCurso;
 	private JTable tblMatriculas;
 	private JButton btnAdicionar;
 	private JButton btnConsultar;
 	private JButton btnEliminar;
-	private JButton btnLimpiar;
+	private JToggleButton btnModificar;
 	private DefaultTableModel tmodel;
 
 	private int contador = 1001;
@@ -89,14 +89,14 @@ public class FrmMatricula extends JFrame implements ActionListener {
 		lblCodAlum.setBounds(10, 60, 189, 27);
 		contentPane.add(lblCodAlum);
 
-		txtCodAlum = new JTextField();
-		txtCodAlum.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		txtCodAlum.setBackground(new Color(55, 55, 60));
-		txtCodAlum.setForeground(Color.WHITE);
-		txtCodAlum.setCaretColor(Color.WHITE);
-		txtCodAlum.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
-		txtCodAlum.setBounds(10, 88, 189, 27);
-		contentPane.add(txtCodAlum);
+		cboCodAlum = new JComboBox();
+		cboCodAlum.setModel(new DefaultComboBoxModel(FrmMenu.arrAlumnos.getArrayCodAlumnos()));
+		cboCodAlum.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		cboCodAlum.setBackground(new Color(55, 55, 60));
+		cboCodAlum.setForeground(Color.WHITE);
+		cboCodAlum.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
+		cboCodAlum.setBounds(10, 88, 189, 27);
+		contentPane.add(cboCodAlum);
 
 		lblCodCurso = new JLabel("Código curso");
 		lblCodCurso.setFont(new Font("Segoe UI", Font.BOLD, 15));
@@ -104,44 +104,14 @@ public class FrmMatricula extends JFrame implements ActionListener {
 		lblCodCurso.setBounds(10, 115, 189, 27);
 		contentPane.add(lblCodCurso);
 
-		txtCodCurso = new JTextField();
-		txtCodCurso.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		txtCodCurso.setBackground(new Color(55, 55, 60));
-		txtCodCurso.setForeground(Color.WHITE);
-		txtCodCurso.setCaretColor(Color.WHITE);
-		txtCodCurso.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
-		txtCodCurso.setBounds(10, 139, 189, 27);
-		contentPane.add(txtCodCurso);
-
-		lblFecha = new JLabel("Fecha");
-		lblFecha.setFont(new Font("Segoe UI", Font.BOLD, 15));
-		lblFecha.setForeground(Color.WHITE);
-		lblFecha.setBounds(10, 165, 189, 27);
-		contentPane.add(lblFecha);
-
-		txtFecha = new JTextField();
-		txtFecha.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		txtFecha.setBackground(new Color(55, 55, 60));
-		txtFecha.setForeground(Color.WHITE);
-		txtFecha.setCaretColor(Color.WHITE);
-		txtFecha.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
-		txtFecha.setBounds(10, 187, 189, 27);
-		contentPane.add(txtFecha);
-
-		lblHora = new JLabel("Hora");
-		lblHora.setFont(new Font("Segoe UI", Font.BOLD, 15));
-		lblHora.setForeground(Color.WHITE);
-		lblHora.setBounds(10, 214, 189, 27);
-		contentPane.add(lblHora);
-
-		txtHora = new JTextField();
-		txtHora.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		txtHora.setBackground(new Color(55, 55, 60));
-		txtHora.setForeground(Color.WHITE);
-		txtHora.setCaretColor(Color.WHITE);
-		txtHora.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
-		txtHora.setBounds(10, 238, 189, 27);
-		contentPane.add(txtHora);
+		cboCodCurso = new JComboBox();
+		cboCodCurso.setModel(new DefaultComboBoxModel(FrmMenu.arrCursos.getArrayCodCursos()));
+		cboCodCurso.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		cboCodCurso.setBackground(new Color(55, 55, 60));
+		cboCodCurso.setForeground(Color.WHITE);
+		cboCodCurso.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
+		cboCodCurso.setBounds(10, 139, 189, 27);
+		contentPane.add(cboCodCurso);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(220, 20, 520, 340);
@@ -191,14 +161,15 @@ public class FrmMatricula extends JFrame implements ActionListener {
 		btnEliminar.setBounds(300, 400, 130, 32);
 		contentPane.add(btnEliminar);
 
-		btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.setBackground(new Color(96, 125, 139));
-		btnLimpiar.setForeground(Color.WHITE);
-		btnLimpiar.setFocusPainted(false);
-		btnLimpiar.setBorderPainted(false);
-		btnLimpiar.addActionListener(this);
-		btnLimpiar.setBounds(440, 400, 130, 32);
-		contentPane.add(btnLimpiar);
+		btnModificar = new JToggleButton("Modificar");
+		btnModificar.addItemListener(this);
+		
+		btnModificar.setBackground(new Color(96, 125, 139));
+		btnModificar.setForeground(Color.WHITE);
+		btnModificar.setFocusPainted(false);
+		btnModificar.setBorderPainted(false);
+		btnModificar.setBounds(440, 400, 130, 32);
+		contentPane.add(btnModificar);
 
 		txtNumMatricula.setText(contador + "");
 		cargarMatriculas();
@@ -226,45 +197,29 @@ public class FrmMatricula extends JFrame implements ActionListener {
 		if (e.getSource() == btnAdicionar) actionPerformedBtnAdicionar(e);
 		if (e.getSource() == btnConsultar) actionPerformedBtnConsultar(e);
 		if (e.getSource() == btnEliminar) actionPerformedBtnEliminar(e);
-		if (e.getSource() == btnLimpiar) limpiarCampos();
+//		if (e.getSource() == btnModificar) limpiarCampos();
 	}
 
 	protected void actionPerformedBtnAdicionar(ActionEvent e) {
-		String codAlumStr = txtCodAlum.getText().trim();
-		String codCursoStr = txtCodCurso.getText().trim();
-		String fecha = txtFecha.getText().trim();
-		String hora = txtHora.getText().trim();
-
-		if (codAlumStr.isEmpty() || codCursoStr.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
-			Mensaje.dialog(this, "Complete todos los campos");
+		int codAlum = Integer.valueOf(cboCodAlum.getSelectedItem() + "");
+		int codCurso = Integer.valueOf(cboCodCurso.getSelectedItem() + "");
+		
+		if (!FrmMenu.listaMatriculas.stream()
+			.map(m -> m.getCodAlumno())
+			.filter(c -> c == codAlum)
+			.toList().isEmpty()) {
+			Mensaje.dialog(this, "El alumno ya se encuentra matriculado");
 			return;
 		}
-
-		int codAlum, codCurso;
-		try {
-			codAlum = Integer.parseInt(codAlumStr);
-			codCurso = Integer.parseInt(codCursoStr);
-		} catch (Exception ex) {
-			Mensaje.dialog(this, "Los códigos deben ser números");
-			return;
-		}
-
-		if (FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(codAlum) == null) {
-			Mensaje.dialog(this, "El código de alumno no existe");
-			return;
-		}
-
-		if (FrmMenu.arrCursos.buscarCursoPorCodigo(codCurso) == null) {
-			Mensaje.dialog(this, "El código de curso no existe");
-			return;
-		}
-
-		Matricula nueva = new Matricula(contador, codAlum, codCurso, fecha, hora);
+		
+		FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(codAlum).setEstado(1);
+		
+		Matricula nueva = new Matricula(Matricula.contadorMatricula++, codAlum, codCurso);
 		FrmMenu.listaMatriculas.add(nueva);
 
-		tmodel.addRow(new Object[]{contador, codAlum, codCurso, fecha, hora});
-		contador++;
-		limpiarCampos();
+		tmodel.addRow(new Object[]{contador, codAlum, codCurso, nueva.getFecha(), nueva.getHora()});
+		
+		txtNumMatricula.setText(Matricula.contadorMatricula + "");
 		Mensaje.dialog(this, "Matrícula registrada correctamente");
 	}
 
@@ -302,9 +257,13 @@ public class FrmMatricula extends JFrame implements ActionListener {
 			Mensaje.dialog(this, "Primero selecciona una matrícula de la tabla");
 			return;
 		}
+		int num = (int) tmodel.getValueAt(rowIndex, 0);
+		if (FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(num).getEstado() == 2) {
+			Mensaje.dialog(this, "No se puede eliminar el alumno está retirado");
+			return;
+		}
 
 		if (Mensaje.confirmar(this, "¿Eliminar esta matrícula?")) {
-			int num = (int) tmodel.getValueAt(rowIndex, 0);
 			FrmMenu.listaMatriculas.removeIf(m -> m.getNumMatricula() == num);
 			tmodel.removeRow(rowIndex);
 			limpiarCampos();
@@ -313,9 +272,43 @@ public class FrmMatricula extends JFrame implements ActionListener {
 
 	private void limpiarCampos() {
 		txtNumMatricula.setText(contador + "");
-		txtCodAlum.setText("");
-		txtCodCurso.setText("");
-		txtFecha.setText("");
-		txtHora.setText("");
+
+	}
+	public void itemStateChanged(ItemEvent e) {
+		if (e.getSource() == btnModificar) {
+			itemStateChangedBtnModificar(e);
+		}
+	}
+	protected void itemStateChangedBtnModificar(ItemEvent e) {
+		System.out.println("hola");
+		int rowIndex = tblMatriculas.getSelectedRow();
+		
+		if (rowIndex == -1) {
+			Mensaje.dialog(this, "Primero selecciona un alumno de la tabla");
+			btnModificar.setSelected(false);
+			return;
+		}
+		if (btnModificar.isSelected()) {
+			txtNumMatricula.setEnabled(false);
+			cboCodAlum.setEnabled(false);
+			cboCodAlum.setEnabled(false);
+			txtNumMatricula.setText(tblMatriculas.getValueAt(rowIndex, 0) + "");
+			cboCodAlum.setSelectedItem(tblMatriculas.getValueAt(rowIndex, 1) + "");
+			cboCodCurso.setSelectedItem(tblMatriculas.getValueAt(rowIndex, 2) + "");	
+		} else {
+			System.out.println(txtNumMatricula.getText());
+			int codNM = Integer.valueOf(txtNumMatricula.getText());
+			int codAlum = Integer.valueOf(cboCodAlum.getSelectedItem() + "");
+			int codCurso = Integer.valueOf(cboCodCurso.getSelectedItem() + "");
+			
+			FrmMenu.listaMatriculas.set(rowIndex, new Matricula(codNM, codAlum, codCurso));
+			
+			txtNumMatricula.setText(Matricula.contadorMatricula + "");
+			txtNumMatricula.setEnabled(true);
+			cboCodAlum.setEnabled(true);
+			cboCodAlum.setEnabled(true);
+			
+//					
+		}
 	}
 }

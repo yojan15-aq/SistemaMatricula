@@ -1,18 +1,34 @@
 package clases;
 
+import java.time.LocalDateTime;
+
 public class Retiro {
 
 	private int numRetiro;
 	private int numMatricula;
 	private String fecha;
 	private  String hora;
+	public static int contador = 2001;
 	
 	//CONSTRUCTOR
 	public Retiro(int numRetiro, int numMatricula, String fecha, String hora) {
-		this.numRetiro = numRetiro;
-		this.numMatricula = numMatricula;
+		this(numRetiro, numMatricula);
 		this.fecha = fecha;
 		this.hora = hora;
+	}
+	public Retiro(int numRetiro, int numMatricula) {
+		this.numRetiro = numRetiro;
+		this.numMatricula = numMatricula;
+		this.fecha = String.join("/",
+				LocalDateTime.now().getDayOfMonth() + "",
+				LocalDateTime.now().getMonthValue() + "",
+				LocalDateTime.now().getYear() + ""
+				);
+		this.hora = String.join(":",
+				LocalDateTime.now().getHour() + "",
+				LocalDateTime.now().getMinute() + ""
+				);
+		
 	}
     //GET Y SET
 	

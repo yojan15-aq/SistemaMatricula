@@ -244,11 +244,23 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 	}
 	protected void actionPerformedBtnEliminar(ActionEvent e) {
 		int rowIndex = tblCursos.getSelectedRow();
+		int codigo;
 		if (rowIndex == -1) {
 			Mensaje.dialog(this, "Primero selecciona un Curso de la tabla");
+			return;
 		}
+		codigo = (int) tmodel.getValueAt(rowIndex, 0);
+		
+		if (!FrmMenu.listaMatriculas.stream()
+				.map(m -> m.getCodCurso())
+				.filter(c -> c == codigo)
+				.toList().isEmpty()) {
+			Mensaje.dialog(this, "Hay alumnos registrados en en este Curso");
+			return;
+		}
+			
 		else if (Mensaje.confirmar(this, "Eliminar?")){
-			int codigo = (int) tmodel.getValueAt(rowIndex, 0); // 0 es la columna de codigo
+			
 			FrmMenu.arrCursos.removerCurso(codigo);
 			FrmMenu.arrCursos.mostrarEnTabla(tmodel);
 		}

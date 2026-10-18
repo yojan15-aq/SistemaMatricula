@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JToggleButton;
 import java.awt.event.ItemListener;
+import java.time.LocalDateTime;
 import java.awt.event.ItemEvent;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -51,7 +52,7 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 	private DefaultTableModel tmodel;
 	
 	
-	private ArrayAlumnos alumnos = new ArrayAlumnos();
+//	private ArrayAlumnos alumnos = new ArrayAlumnos();
 
 	/**
 	 * Launch the application.
@@ -196,7 +197,7 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		contentPane.add(btnEliminar);
 
 		txtCodAlumno.setText(Alumno.contadorAlumnos + "");
-		generarAlumnosPrueba();
+		FrmMenu.arrAlumnos.mostrarEnTabla(tmodel);
 		
 	}
 	
@@ -217,8 +218,8 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		if (a == null) return;
 		
 //		Alumno alumno = new Alumno(codAlumno, nombres, apellidos, dni, edad, celular, estado);
-		alumnos.agregarAlumno(a);
-		alumnos.mostrarEnTabla(tmodel);
+		FrmMenu.arrAlumnos.agregarAlumno(a);
+		FrmMenu.arrAlumnos.mostrarEnTabla(tmodel);
 		
 		limpiarCampos(true);
 		txtCodAlumno.setText(Alumno.contadorAlumnos + "");
@@ -232,13 +233,13 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		if (rowIndex == -1) {
 			Mensaje.dialog(this, "Primero selecciona un alumno de la tabla");
 		}
-		else if (alumnos.TextToEstado(tmodel.getValueAt(rowIndex, 6) + "") != 0)  {
+		else if (FrmMenu.arrAlumnos.TextToEstado(tmodel.getValueAt(rowIndex, 6) + "") != 0)  {
 			Mensaje.dialog(this, "No se puede eliminar, Ya esta " + tmodel.getValueAt(rowIndex, 6));
 		}
 		else if (Mensaje.confirmar(this, "Eliminar?")){
 			int codigo = (int) tmodel.getValueAt(rowIndex, 0); // 0 es la columna de codigo
-			alumnos.removerAlumno(codigo);
-			alumnos.mostrarEnTabla(tmodel);
+			FrmMenu.arrAlumnos.removerAlumno(codigo);
+			FrmMenu.arrAlumnos.mostrarEnTabla(tmodel);
 		}
 		else Mensaje.dialog(this, "Eliminación cancelada");
 	}
@@ -270,7 +271,7 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 			txtCelular.setText(tblAlumnos.getValueAt(rowIndex, 5) + "");
 //			txtEstado.setText(tblAlumnos.getValueAt(rowIndex, 6) + "");
 			cboEstado.setSelectedIndex(
-					alumnos.TextToEstado(tblAlumnos.getValueAt(rowIndex, 6) + "")
+					FrmMenu.arrAlumnos.TextToEstado(tblAlumnos.getValueAt(rowIndex, 6) + "")
 					);
 			
 		} else {
@@ -278,12 +279,12 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 			
 			if (a == null) return;
 			
-			alumnos.actualizar(a);
+			FrmMenu.arrAlumnos.actualizar(a);
 			txtCodAlumno.setEnabled(true);
 			txtDni.setEnabled(true);
 			cboEstado.setEnabled(false);
 			cboEstado.setEditable(false);
-			alumnos.mostrarEnTabla(tmodel);
+			FrmMenu.arrAlumnos.mostrarEnTabla(tmodel);
 			limpiarCampos(false);		
 		}
 	}
@@ -310,7 +311,7 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 			return null;
 			// TODO: handle exception
 		}
-		if (verificarDNI && alumnos.verificarDniRepetido(dni)) {
+		if (verificarDNI && FrmMenu.arrAlumnos.verificarDniRepetido(dni)) {
 			Mensaje.dialog(this, "El DNI ya está registrado");
 //			System.out.println("El DNI ya está registrado");
 			return null;
@@ -340,36 +341,20 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		txtCelular.setText("");
 		cboEstado.setSelectedIndex(0);;
 	}
-	// metodo que genero 5 alumnos de prueba
-	public void generarAlumnosPrueba() {
-		Alumno a1 = new Alumno(Alumno.generarCodigoAlumno(), "Juan", "Perez", "12345678", 20, 987654321, 0);
-		Alumno a2 = new Alumno(Alumno.generarCodigoAlumno(), "Maria", "Gomez", "23456789", 22, 987654322, 1);
-		Alumno a3 = new Alumno(Alumno.generarCodigoAlumno(), "Pedro", "Lopez", "34567890", 21, 987654323, 2);
-		Alumno a4 = new Alumno(Alumno.generarCodigoAlumno(), "Ana", "Martinez", "45678901", 23, 987654324, 0);
-		Alumno a5 = new Alumno(Alumno.generarCodigoAlumno(), "Luis", "Garcia", "56789012", 24, 987654325, 1);
-		
-		alumnos.agregarAlumno(a1);
-		alumnos.agregarAlumno(a2);
-		alumnos.agregarAlumno(a3);
-		alumnos.agregarAlumno(a4);
-		alumnos.agregarAlumno(a5);
-
-		txtCodAlumno.setText(Alumno.contadorAlumnos + "");
-		alumnos.mostrarEnTabla(tmodel);
-	}
+	
 	
 	protected void actionPerformedBtnConsultar(ActionEvent e) {
 		JComboBox cbo = new JComboBox();
 		cbo.setEnabled(true);
 		cbo.setEditable(true);
 //		cbo
-		cbo.setModel(new DefaultComboBoxModel(alumnos.getArrayCodAlumnos()));
+		cbo.setModel(new DefaultComboBoxModel(FrmMenu.arrAlumnos.getArrayCodAlumnos()));
 		cbo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		int cod = Mensaje.consultarAlumno(this, cbo);
 		if (cod == -1) return;
 		
-		Alumno a = alumnos.buscarAlumnoPorCodigo(cod);
+		Alumno a = FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(cod);
 		Mensaje.dialog(this,
 				"Codigo: " + a.getCodAlumno() +
 				"\nNombres: " + a.getNombres() +

@@ -47,7 +47,6 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 	private JButton btnEliminar;
 	
 	private DefaultTableModel tmodel;
-	private ArrayCursos cursos = new ArrayCursos();
 
 	/**
 	 * Launch the application.
@@ -167,7 +166,8 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 		btnEliminar.setBounds(440, 400, 130, 30);
 		contentPane.add(btnEliminar);
 		
-		generarCursosPrueba();
+//		generarCursosPrueba();
+		FrmMenu.arrCursos.mostrarEnTabla(tmodel);
 
 	}
 	public void actionPerformed(ActionEvent e) {
@@ -187,9 +187,9 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 		
 		if (curso == null) return;
 		
-		cursos.agregarCurso(curso);
+		FrmMenu.arrCursos.agregarCurso(curso);
 		
-		cursos.mostrarEnTabla(tmodel);
+		FrmMenu.arrCursos.mostrarEnTabla(tmodel);
 		
 		limpiarCampos();
 	}
@@ -200,8 +200,8 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 		}
 		else if (Mensaje.confirmar(this, "Eliminar?")){
 			int codigo = (int) tmodel.getValueAt(rowIndex, 0); // 0 es la columna de codigo
-			cursos.removerCurso(codigo);
-			cursos.mostrarEnTabla(tmodel);
+			FrmMenu.arrCursos.removerCurso(codigo);
+			FrmMenu.arrCursos.mostrarEnTabla(tmodel);
 		}
 		else Mensaje.dialog(this, "Eliminación cancelada");
 	}
@@ -222,7 +222,7 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 			txtCodCurso.setText(tblCursos.getValueAt(rowIndex, 0) + "");
 			txtAsignatura.setText(tblCursos.getValueAt(rowIndex, 1) + "");
 			cboCiclo.setSelectedIndex(
-					cursos.TextToCiclo(tblCursos.getValueAt(rowIndex, 2) + "")
+					FrmMenu.arrCursos.TextToCiclo(tblCursos.getValueAt(rowIndex, 2) + "")
 					);
 			txtCreditos.setText(tblCursos.getValueAt(rowIndex, 3) + "");
 			txtHoras.setText(tblCursos.getValueAt(rowIndex, 4) + "");
@@ -237,8 +237,8 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 			
 			if (curso == null) return;
 			
-			cursos.actualizar(curso);
-			cursos.mostrarEnTabla(tmodel);
+			FrmMenu.arrCursos.actualizar(curso);
+			FrmMenu.arrCursos.mostrarEnTabla(tmodel);
 			limpiarCampos();		
 		}
 	}
@@ -274,7 +274,7 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 			Mensaje.dialog(this, "El código debe ser de 4 dígitos");
 			return null;
 		}
-		else if (verificarCod && cursos.verificarCodigoRepetido(codCurso)) {
+		else if (verificarCod && FrmMenu.arrCursos.verificarCodigoRepetido(codCurso)) {
 			Mensaje.dialog(this, "El Código ya está registrado");
 			return null;
 		}
@@ -282,31 +282,23 @@ public class FrmCurso extends JFrame implements ActionListener, ItemListener {
 		return new Curso(codCurso, asignatura, ciclo, creditos, horas);
 	}
 	// generrar 5 cursos de prueba
-	public void generarCursosPrueba() {
-		cursos.agregarCurso(new Curso(1001, "Matemática", 0, 4, 60));
-		cursos.agregarCurso(new Curso(1020, "Física", 1, 3, 45));
-		cursos.agregarCurso(new Curso(1030, "Química", 2, 4, 60));
-		cursos.agregarCurso(new Curso(1040, "Biología", 3, 3, 45));
-		cursos.agregarCurso(new Curso(1005, "Historia", 4, 2, 30));
-		
-		cursos.mostrarEnTabla(tmodel);
-	}
+	
 	protected void actionPerformedBtnConsultar(ActionEvent e) {
 		JComboBox cbo = new JComboBox();
 		cbo.setEnabled(true);
 		cbo.setEditable(true);
 //		cbo
-		cbo.setModel(new DefaultComboBoxModel(cursos.getArrayCodCursos()));
+		cbo.setModel(new DefaultComboBoxModel(FrmMenu.arrCursos.getArrayCodCursos()));
 		cbo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		
 		int cod = Mensaje.consultarAlumno(this, cbo);
 		if (cod == -1) return;
 		
-		Curso a = cursos.buscarCursoPorCodigo(cod);
+		Curso a = FrmMenu.arrCursos.buscarCursoPorCodigo(cod);
 		Mensaje.dialog(this,
 				"Codigo: " + a.getCodCurso() +
 				"\nAsignatura: " + a.getAsignatura() +
-				"\nCiclo: " +  cursos.cicloToText(a.getCiclo())+
+				"\nCiclo: " +  FrmMenu.arrCursos.cicloToText(a.getCiclo())+
 				"\nCreditos: " + a.getCreditos() +
 				"\nHoras: " + a.getHoras() );
 	}

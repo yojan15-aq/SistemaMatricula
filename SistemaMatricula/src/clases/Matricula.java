@@ -1,5 +1,8 @@
 package clases;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class Matricula {
 
 	//ATRIBUTOS
@@ -8,14 +11,27 @@ public class Matricula {
 	private int codCurso;
 	private String fecha;
 	private  String hora;
+	public static int contadorMatricula = 1001;
 	
 	//CONSTRUCTOR
 	public Matricula(int numMatricula, int codAlumno, int codCurso, String fecha, String hora) {
+		this(numMatricula, codAlumno, codCurso);
+		this.fecha = fecha;
+		this.hora = hora;
+	}
+	public Matricula(int numMatricula, int codAlumno, int codCurso) {
 		this.numMatricula = numMatricula;
 		this.codAlumno = codAlumno;
 		this.codCurso = codCurso;
-		this.fecha = fecha;
-		this.hora = hora;
+		this.fecha = String.join("/",
+				LocalDateTime.now().getDayOfMonth() + "",
+				LocalDateTime.now().getMonthValue() + "",
+				LocalDateTime.now().getYear() + ""
+				);
+		this.hora = String.join(":",
+				LocalDateTime.now().getHour() + "",
+				LocalDateTime.now().getMinute() + ""
+				);
 	}
 	
 	//GET Y SET

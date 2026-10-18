@@ -6,11 +6,15 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import Utils.Mensaje;
+import clases.Alumno;
+import clases.Matricula;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -18,30 +22,28 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JToggleButton;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
-public class FrmMatricula extends JFrame implements ActionListener {
+public class FrmMatricula extends JFrame implements ActionListener, ItemListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblNumMatricula;
 	private JTextField txtNumMatricula;
 	private JLabel lblCodAlum;
-	private JTextField txtCodAlum;
+	private JComboBox cboCodAlum;
 	private JLabel lblCodCurso;
-	private JTextField txtCodCurso;
-	private JLabel lblFecha;
-	private JTextField txtCreditos;
-	private JLabel lblHora;
-	private JTextField txtHora;
+	private JComboBox cboCodCurso;
 	private JTable tblAlumnos;
 	private JButton btnAdicionar;
 	private JButton btnConsultar;
 	private JButton btnEliminar;
-	private JButton btnLimpiar;
+	private JToggleButton btnModificar;
 	private DefaultTableModel tmodel;
 
-	private List<String[]> listaMatriculas = new ArrayList<>();
-	private int contador = 1001;
+//	private int contador = 1001;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -87,39 +89,18 @@ public class FrmMatricula extends JFrame implements ActionListener {
 		lblCodCurso.setBounds(10, 115, 189, 27);
 		contentPane.add(lblCodCurso);
 
-		txtCodAlum = new JTextField();
-		txtCodAlum.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtCodAlum.setColumns(10);
-		txtCodAlum.setBounds(10, 88, 189, 27);
-		contentPane.add(txtCodAlum);
+		cboCodAlum = new JComboBox();
+		cboCodAlum.setModel(new DefaultComboBoxModel(FrmMenu.arrAlumnos.getArrayCodAlumnos()));
+		
+		cboCodAlum.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cboCodAlum.setBounds(10, 88, 189, 27);
+		contentPane.add(cboCodAlum);
 
-		txtCodCurso = new JTextField();
-		txtCodCurso.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtCodCurso.setColumns(10);
-		txtCodCurso.setBounds(10, 139, 189, 27);
-		contentPane.add(txtCodCurso);
-
-		lblFecha = new JLabel("Fecha");
-		lblFecha.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblFecha.setBounds(10, 165, 189, 27);
-		contentPane.add(lblFecha);
-
-		txtCreditos = new JTextField();
-		txtCreditos.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtCreditos.setColumns(10);
-		txtCreditos.setBounds(10, 187, 189, 27);
-		contentPane.add(txtCreditos);
-
-		lblHora = new JLabel("Hora");
-		lblHora.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblHora.setBounds(10, 214, 189, 27);
-		contentPane.add(lblHora);
-
-		txtHora = new JTextField();
-		txtHora.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtHora.setColumns(10);
-		txtHora.setBounds(10, 238, 189, 27);
-		contentPane.add(txtHora);
+		cboCodCurso = new JComboBox();
+		cboCodCurso.setModel(new DefaultComboBoxModel(FrmMenu.arrCursos.getArrayCodCursos()));
+		cboCodCurso.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		cboCodCurso.setBounds(10, 139, 189, 27);
+		contentPane.add(cboCodCurso);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(220, 20, 520, 340);
@@ -150,13 +131,21 @@ public class FrmMatricula extends JFrame implements ActionListener {
 		btnEliminar.addActionListener(this);
 		contentPane.add(btnEliminar);
 
-		btnLimpiar = new JButton("Limpiar");
-		btnLimpiar.setBounds(440, 400, 130, 30);
-		btnLimpiar.addActionListener(this);
-		contentPane.add(btnLimpiar);
+		btnModificar = new JToggleButton("Modificar");
+		btnModificar.addItemListener(this);
+		btnModificar.setBounds(440, 400, 130, 30);
+		contentPane.add(btnModificar);
 
-		txtNumMatricula.setText(contador + "");
-		generarMatriculasPrueba();
+		txtNumMatricula.setText(Matricula.contadorMatricula + "");
+		for (Matricula m : FrmMenu.listaMatriculas) {
+			tmodel.addRow(new Object[] {
+					m.getNumMatricula(),
+					m.getCodAlumno(),
+					m.getCodCurso(),
+					m.getFecha(),
+					m.getHora()
+				});
+		}
 	}
 
 	@Override
@@ -164,40 +153,53 @@ public class FrmMatricula extends JFrame implements ActionListener {
 		if (e.getSource() == btnAdicionar) actionPerformedBtnAdicionar(e);
 		if (e.getSource() == btnConsultar) actionPerformedBtnConsultar(e);
 		if (e.getSource() == btnEliminar) actionPerformedBtnEliminar(e);
-		if (e.getSource() == btnLimpiar) limpiarCampos();
+
 	}
 
 	protected void actionPerformedBtnAdicionar(ActionEvent e) {
-		String codAlum = txtCodAlum.getText().trim();
-		String codCurso = txtCodCurso.getText().trim();
-		String fecha = txtCreditos.getText().trim();
-		String hora = txtHora.getText().trim();
+		int codAlum = Integer.valueOf(cboCodAlum.getSelectedItem() + "");
+		int codCurso = Integer.valueOf(cboCodCurso.getSelectedItem() + "");
+//		String fecha = txtCreditos.getText().trim();
+//		String hora = txtHora.getText().trim();
 
-		if (codAlum.isEmpty() || codCurso.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
-			Mensaje.dialog(this, "Complete todos los campos");
-			return;
-		}
+//		if (codAlum.isEmpty() || codCurso.isEmpty()) {
+//			Mensaje.dialog(this, "Complete todos los campos");
+//			return;
+//		}
+//		if (!codAlum.matches("\\d+") || !codCurso.matches("\\d+")) {
+//			Mensaje.dialog(this, "Los códigos deben ser numéricos");
+//			return;
+//		}
 
-		String num = contador + "";
-		listaMatriculas.add(new String[]{num, codAlum, codCurso, fecha, hora});
-		tmodel.addRow(new Object[]{num, codAlum, codCurso, fecha, hora});
+		String num = Matricula.contadorMatricula + "";
+		Matricula matricula = new Matricula(Integer.valueOf(num), codAlum, codCurso);
+		FrmMenu.listaMatriculas.add(matricula);
+		tmodel.addRow(new Object[] {
+				matricula.getNumMatricula(),
+				matricula.getCodAlumno(),
+				matricula.getCodCurso(),
+				matricula.getFecha(),
+				matricula.getHora()
+			});
 
-		contador++;
+		Matricula.contadorMatricula++;
 		limpiarCampos();
+		txtNumMatricula.setText(Matricula.contadorMatricula + "");
 		Mensaje.dialog(this, "Matrícula registrada correctamente");
 	}
 
 	protected void actionPerformedBtnConsultar(ActionEvent e) {
-	    if (listaMatriculas.isEmpty()) {
+	    if (FrmMenu.listaMatriculas.isEmpty()) {
 	        Mensaje.dialog(this, "No hay matrículas registradas");
 	        return;
 	    }
 
 	    // Crear combo con los números de matrícula
 	    JComboBox cbo = new JComboBox();
-	    for (String[] m : listaMatriculas) {
-	        cbo.addItem(m[0]); // número de matrícula
-	    }
+	    FrmMenu.listaMatriculas.forEach(m -> cbo.addItem(m.getNumMatricula()));
+//	    for (Matricula m : listaMatriculas) {
+//	        cbo.addItem(m.getNumMatricula()); // número de matrícula
+//	    }
 
 	    int res = JOptionPane.showConfirmDialog(
 	            this,
@@ -207,17 +209,19 @@ public class FrmMatricula extends JFrame implements ActionListener {
 
 	    if (res != JOptionPane.OK_OPTION) return;
 
-	    String numSeleccionado = cbo.getSelectedItem().toString();
+//	    String numSeleccionado = cbo.getSelectedItem().toString();
+	    int numSeleccionado = (int) cbo.getSelectedItem();
 
 	    // Buscar la matrícula
-	    for (String[] m : listaMatriculas) {
-	        if (m[0].equals(numSeleccionado)) {
+//	    listaMatriculas
+	    for (Matricula m : FrmMenu.listaMatriculas) {
+	        if (m.getNumMatricula() == numSeleccionado) {
 	            Mensaje.dialog(this,
-	                "N° Matrícula: " + m[0] +
-	                "\nCódigo Alumno: " + m[1] +
-	                "\nCódigo Curso: " + m[2] +
-	                "\nFecha: " + m[3] +
-	                "\nHora: " + m[4]);
+	                "N° Matrícula: " + m.getNumMatricula() +
+	                "\nCódigo Alumno: " + m.getCodAlumno() +
+	                "\nCódigo Curso: " + m.getCodCurso() +
+	                "\nFecha: " + m.getFecha() +
+	                "\nHora: " + m.getHora());
 	            return;
 	        }
 	    }
@@ -231,29 +235,68 @@ public class FrmMatricula extends JFrame implements ActionListener {
 		}
 
 		if (Mensaje.confirmar(this, "¿Eliminar esta matrícula?")) {
-			listaMatriculas.remove(rowIndex);
+			FrmMenu.listaMatriculas.remove(rowIndex);
 			tmodel.removeRow(rowIndex);
 			limpiarCampos();
 		}
 	}
 
 	private void limpiarCampos() {
-		txtNumMatricula.setText(contador + "");
-		txtCodAlum.setText("");
-		txtCodCurso.setText("");
-		txtCreditos.setText("");
-		txtHora.setText("");
+
 	}
 
-	private void generarMatriculasPrueba() {
-		listaMatriculas.add(new String[]{"1001", "202610001", "1001", "15/10/2026", "08:00"});
-		listaMatriculas.add(new String[]{"1002", "202610002", "1020", "15/10/2026", "10:00"});
-		listaMatriculas.add(new String[]{"1003", "202610003", "1030", "16/10/2026", "14:00"});
+	
 
-		for (String[] m : listaMatriculas) {
-			tmodel.addRow(m);
+	public void itemStateChanged(ItemEvent e) {
+		if (e.getSource() == btnModificar) {
+			itemStateChangedBtnModificar(e);
 		}
-		contador = 1004;
-		txtNumMatricula.setText(contador + "");
+	}
+	protected void itemStateChangedBtnModificar(ItemEvent e) {
+		int rowIndex = tblAlumnos.getSelectedRow();
+		
+		if (rowIndex == -1) {
+			Mensaje.dialog(this, "Primero selecciona un alumno de la tabla");
+			btnModificar.setSelected(false);
+			return;
+		}
+		if (btnModificar.isSelected()) {
+			txtNumMatricula.setEnabled(false);
+//			txtDni.setEnabled(false);
+			cboCodAlum.setEditable(false);
+			cboCodAlum.setEnabled(false);
+			txtNumMatricula.setText(tblAlumnos.getValueAt(rowIndex, 0) + "");
+			cboCodAlum.setSelectedItem(tblAlumnos.getValueAt(rowIndex, 1) + "");
+			cboCodCurso.setSelectedItem(tblAlumnos.getValueAt(rowIndex, 2) + "");
+//			txtApellidos.setText(tblAlumnos.getValueAt(rowIndex, 2) + "");
+//			txtDni.setText(tblAlumnos.getValueAt(rowIndex, 3) + "");
+//			txtEdad.setText(tblAlumnos.getValueAt(rowIndex, 4) + "");
+//			txtCelular.setText(tblAlumnos.getValueAt(rowIndex, 5) + "");
+////			txtEstado.setText(tblAlumnos.getValueAt(rowIndex, 6) + "");
+//			cboEstado.setSelectedIndex(
+//					FrmMenu.arrAlumnos.TextToEstado(tblAlumnos.getValueAt(rowIndex, 6) + "")
+//					);
+			
+		} else {
+//			// actualizar num matricula
+			System.out.println(txtNumMatricula.getText());
+			int codNM = Integer.valueOf(txtNumMatricula.getText());
+			int codAlum = Integer.valueOf(cboCodAlum.getSelectedItem() + "");
+			int codCurso = Integer.valueOf(cboCodCurso.getSelectedItem() + "");
+			
+			FrmMenu.listaMatriculas.set(rowIndex, new Matricula(codNM, codAlum, codCurso));
+			
+			txtNumMatricula.setText(Matricula.contadorMatricula + "");
+			
+//			txtCodAlumno.setEnabled(true);
+//			txtDni.setEnabled(true);
+//			cboEstado.setEnabled(false);
+//			cboEstado.setEditable(false);
+//			FrmMenu.arrAlumnos.mostrarEnTabla(tmodel);
+//			limpiarCampos(false);		
+		}
+		
+//		cboCodAlum.setText("");
+//		cboCodCurso.setText("");
 	}
 }

@@ -1,5 +1,8 @@
 package clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Curso {
 	
 	//atributos
@@ -8,6 +11,7 @@ private String asignatura;
 private int ciclo;
 private  int creditos;
 private int  horas;
+public static List<Integer> listaCodigos = new ArrayList<>();
 
 //CONSTRUCCTOR
 public Curso(int codCurso, String asignatura, int ciclo, int creditos, int horas) {
@@ -17,6 +21,7 @@ public Curso(int codCurso, String asignatura, int ciclo, int creditos, int horas
 	this.ciclo = ciclo;
 	this.creditos = creditos;
 	this.horas = horas;
+	listaCodigos.add(codCurso);
 }
 
 //GET Y SET

@@ -27,13 +27,11 @@ public class Alumno {
 		this.estado = estado;
 	}
 	
-	// generar codigo correlativo
 	public static int generarCodigoAlumno() {
 		int auxiliar = contadorAlumnos;
 		contadorAlumnos += 1;
 		return auxiliar;
 	}
-//	public static int 
 	
 	//get y set
 	public int getCodAlumno() {

@@ -3,6 +3,9 @@ package gui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,7 +13,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import arreglos.ArrayAlumnos;
+import arreglos.ArrayCursos;
+import clases.Alumno;
+import clases.Curso;
+import clases.Matricula;
+
 public class FrmMenu extends JFrame {
+	public static ArrayAlumnos arrAlumnos = new ArrayAlumnos();
+	public static ArrayCursos arrCursos = new ArrayCursos();
+	public static List<Matricula> listaMatriculas = new ArrayList<>();
 
     public FrmMenu() {
         setTitle("Sistema de Matrícula");
@@ -62,6 +74,10 @@ public class FrmMenu extends JFrame {
         btnRetiro.addActionListener(e -> new FrmRetiro().setVisible(true));
         btnConsulta.addActionListener(e -> new FrmConsulta().setVisible(true));
         btnReporte.addActionListener(e -> new FrmReporte().setVisible(true));
+        
+        generarAlumnosPrueba();
+        generarCursosPrueba();
+        generarMatriculasPrueba();
     }
 
     private JButton crearBoton(String texto, Color color) {
@@ -77,4 +93,33 @@ public class FrmMenu extends JFrame {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(() -> new FrmMenu().setVisible(true));
     }
+    public void generarAlumnosPrueba() {
+		Alumno a1 = new Alumno(Alumno.generarCodigoAlumno(), "Juan", "Perez", "12345678", 20, 987654321, 0);
+		Alumno a2 = new Alumno(Alumno.generarCodigoAlumno(), "Maria", "Gomez", "23456789", 22, 987654322, 1);
+		Alumno a3 = new Alumno(Alumno.generarCodigoAlumno(), "Pedro", "Lopez", "34567890", 21, 987654323, 2);
+		Alumno a4 = new Alumno(Alumno.generarCodigoAlumno(), "Ana", "Martinez", "45678901", 23, 987654324, 0);
+		Alumno a5 = new Alumno(Alumno.generarCodigoAlumno(), "Luis", "Garcia", "56789012", 24, 987654325, 1);
+		
+		FrmMenu.arrAlumnos.agregarAlumno(a1);
+		FrmMenu.arrAlumnos.agregarAlumno(a2);
+		FrmMenu.arrAlumnos.agregarAlumno(a3);
+		FrmMenu.arrAlumnos.agregarAlumno(a4);
+		FrmMenu.arrAlumnos.agregarAlumno(a5);
+	}
+    public void generarCursosPrueba() {
+		arrCursos.agregarCurso(new Curso(1001, "Matemática", 0, 4, 60));
+		arrCursos.agregarCurso(new Curso(1020, "Física", 1, 3, 45));
+		arrCursos.agregarCurso(new Curso(1030, "Química", 2, 4, 60));
+		arrCursos.agregarCurso(new Curso(1040, "Biología", 3, 3, 45));
+		arrCursos.agregarCurso(new Curso(1005, "Historia", 4, 2, 30));
+		
+//		cursos.mostrarEnTabla(tmodel);
+	}
+    private void generarMatriculasPrueba() {
+		FrmMenu.listaMatriculas.add(new Matricula(1001, 202610001, 1001, "15/10/2026", "08:00"));
+		FrmMenu.listaMatriculas.add(new Matricula(1002, 202610002, 1020, "15/10/2026", "10:00"));
+		FrmMenu.listaMatriculas.add(new Matricula(1003, 202610003, 1030, "16/10/2026", "14:00"));
+
+		Matricula.contadorMatricula = 1004;
+	}
 }

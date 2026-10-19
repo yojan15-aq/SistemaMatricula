@@ -41,7 +41,7 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 	private JToggleButton btnModificar;
 	private DefaultTableModel tmodel;
 
-	private int contador = 1001;
+//	private int contador = 1001;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -74,6 +74,7 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 		contentPane.add(lblNumMatricula);
 
 		txtNumMatricula = new JTextField();
+		txtNumMatricula.setEnabled(false);
 		txtNumMatricula.setEditable(false);
 		txtNumMatricula.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		txtNumMatricula.setBackground(new Color(55, 55, 60));
@@ -171,7 +172,7 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 		btnModificar.setBounds(440, 400, 130, 32);
 		contentPane.add(btnModificar);
 
-		txtNumMatricula.setText(contador + "");
+		txtNumMatricula.setText(Matricula.contador + "");
 		cargarMatriculas();
 	}
 
@@ -187,9 +188,9 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 			});
 		}
 		if (!FrmMenu.listaMatriculas.isEmpty()) {
-			contador = FrmMenu.listaMatriculas.get(FrmMenu.listaMatriculas.size() - 1).getNumMatricula() + 1;
+			Matricula.contador = FrmMenu.listaMatriculas.get(FrmMenu.listaMatriculas.size() - 1).getNumMatricula() + 1;
 		}
-		txtNumMatricula.setText(contador + "");
+		txtNumMatricula.setText(Matricula.contador + "");
 	}
 
 	@Override
@@ -204,22 +205,31 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 		int codAlum = Integer.valueOf(cboCodAlum.getSelectedItem() + "");
 		int codCurso = Integer.valueOf(cboCodCurso.getSelectedItem() + "");
 		
-		if (!FrmMenu.listaMatriculas.stream()
-			.map(m -> m.getCodAlumno())
-			.filter(c -> c == codAlum)
-			.toList().isEmpty()) {
-			Mensaje.dialog(this, "El alumno ya se encuentra matriculado");
+//		if (!FrmMenu.listaMatriculas.stream()
+//			.map(m -> m.getCodAlumno())
+//			.filter(c -> c == codAlum)
+//			.toList().isEmpty()) {
+//			Mensaje.dialog(this, "El alumno ya se encuentra matriculado");
+//			return;
+//		}
+		if (FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(codAlum).getEstado() == 2) {
+			Mensaje.dialog(this, "El alumno esta retirado");
+			return;
+		}
+		if (FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(codAlum).getEstado() == 1) {
+			Mensaje.dialog(this, "El alumno ya se encuentra Matriculado");
 			return;
 		}
 		
 		FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(codAlum).setEstado(1);
 		
-		Matricula nueva = new Matricula(Matricula.contadorMatricula++, codAlum, codCurso);
+		Matricula nueva = new Matricula(Matricula.contador, codAlum, codCurso);
 		FrmMenu.listaMatriculas.add(nueva);
 
-		tmodel.addRow(new Object[]{contador, codAlum, codCurso, nueva.getFecha(), nueva.getHora()});
+		tmodel.addRow(new Object[]{Matricula.contador, codAlum, codCurso, nueva.getFecha(), nueva.getHora()});
 		
-		txtNumMatricula.setText(Matricula.contadorMatricula + "");
+		Matricula.contador++;
+		txtNumMatricula.setText(Matricula.contador + "");
 		Mensaje.dialog(this, "Matrícula registrada correctamente");
 	}
 
@@ -257,21 +267,23 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 			Mensaje.dialog(this, "Primero selecciona una matrícula de la tabla");
 			return;
 		}
-		int num = (int) tmodel.getValueAt(rowIndex, 0);
-		if (FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(num).getEstado() == 2) {
+		int num = Integer.valueOf(tmodel.getValueAt(rowIndex, 0) + "");
+		int codAlumn = Integer.valueOf(tmodel.getValueAt(rowIndex, 1) + "");
+		if (FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(codAlumn).getEstado() == 2) {
 			Mensaje.dialog(this, "No se puede eliminar el alumno está retirado");
 			return;
 		}
 
 		if (Mensaje.confirmar(this, "¿Eliminar esta matrícula?")) {
 			FrmMenu.listaMatriculas.removeIf(m -> m.getNumMatricula() == num);
+			FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(codAlumn).setEstado(0);
 			tmodel.removeRow(rowIndex);
 			limpiarCampos();
 		}
 	}
 
 	private void limpiarCampos() {
-		txtNumMatricula.setText(contador + "");
+		txtNumMatricula.setText(Matricula.contador + "");
 
 	}
 	public void itemStateChanged(ItemEvent e) {
@@ -302,13 +314,26 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 			int codCurso = Integer.valueOf(cboCodCurso.getSelectedItem() + "");
 			
 			FrmMenu.listaMatriculas.set(rowIndex, new Matricula(codNM, codAlum, codCurso));
+			mostrarEnTabla();
 			
-			txtNumMatricula.setText(Matricula.contadorMatricula + "");
+			txtNumMatricula.setText(Matricula.contador + "");
 			txtNumMatricula.setEnabled(true);
 			cboCodAlum.setEnabled(true);
 			cboCodAlum.setEnabled(true);
 			
 //					
 		}
+	}
+	private void mostrarEnTabla() {
+		tmodel.setRowCount(0);
+		FrmMenu.listaMatriculas.forEach(m -> {
+			tmodel.addRow(new Object[] {
+					m.getNumMatricula(),
+					m.getCodAlumno(),
+					m.getCodCurso(),
+					m.getFecha(),
+					m.getHora()
+			});
+		});
 	}
 }

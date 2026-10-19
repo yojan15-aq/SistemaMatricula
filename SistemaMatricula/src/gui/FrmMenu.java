@@ -18,12 +18,14 @@ import arreglos.ArrayCursos;
 import clases.Alumno;
 import clases.Curso;
 import clases.Matricula;
+import clases.Retiro;
 
 @SuppressWarnings("serial")
 public class FrmMenu extends JFrame {
 	public static ArrayAlumnos arrAlumnos = new ArrayAlumnos();
 	public static ArrayCursos arrCursos = new ArrayCursos();
 	public static List<Matricula> listaMatriculas = new ArrayList<>();
+	public static List<Retiro> listaRetiros = new ArrayList<>();
 
     public FrmMenu() {
         setTitle("Sistema de Matrícula");
@@ -79,6 +81,7 @@ public class FrmMenu extends JFrame {
         generarAlumnosPrueba();
         generarCursosPrueba();
         generarMatriculasPrueba();
+        generarRetirosPrueba();
     }
 
     private JButton crearBoton(String texto, Color color) {
@@ -117,10 +120,10 @@ public class FrmMenu extends JFrame {
     }
     public void generarAlumnosPrueba() {
 		Alumno a1 = new Alumno(Alumno.generarCodigoAlumno(), "Juan", "Perez", "12345678", 20, 987654321, 0);
-		Alumno a2 = new Alumno(Alumno.generarCodigoAlumno(), "Maria", "Gomez", "23456789", 22, 987654322, 1);
-		Alumno a3 = new Alumno(Alumno.generarCodigoAlumno(), "Pedro", "Lopez", "34567890", 21, 987654323, 2);
+		Alumno a2 = new Alumno(Alumno.generarCodigoAlumno(), "Maria", "Gomez", "23456789", 22, 987654322, 0);
+		Alumno a3 = new Alumno(Alumno.generarCodigoAlumno(), "Pedro", "Lopez", "34567890", 21, 987654323, 0);
 		Alumno a4 = new Alumno(Alumno.generarCodigoAlumno(), "Ana", "Martinez", "45678901", 23, 987654324, 0);
-		Alumno a5 = new Alumno(Alumno.generarCodigoAlumno(), "Luis", "Garcia", "56789012", 24, 987654325, 1);
+		Alumno a5 = new Alumno(Alumno.generarCodigoAlumno(), "Luis", "Garcia", "56789012", 24, 987654325, 0);
 		
 		FrmMenu.arrAlumnos.agregarAlumno(a1);
 		FrmMenu.arrAlumnos.agregarAlumno(a2);
@@ -138,10 +141,17 @@ public class FrmMenu extends JFrame {
 //		cursos.mostrarEnTabla(tmodel);
 	}
     private void generarMatriculasPrueba() {
-		FrmMenu.listaMatriculas.add(new Matricula(1001, 202610001, 1001, "15/10/2026", "08:00"));
-		FrmMenu.listaMatriculas.add(new Matricula(1002, 202610002, 1020, "15/10/2026", "10:00"));
-		FrmMenu.listaMatriculas.add(new Matricula(1003, 202610003, 1030, "16/10/2026", "14:00"));
+//		FrmMenu.listaMatriculas.add(new Matricula(1001, 202610001, 1001, "15/10/2026", "08:00"));
+//		FrmMenu.listaMatriculas.add(new Matricula(1002, 202610002, 1020, "15/10/2026", "10:00"));
+//		FrmMenu.listaMatriculas.add(new Matricula(1003, 202610003, 1030, "16/10/2026", "14:00"));
+//
+//		Matricula.contadorMatricula = 1004;
+	}
+    private void generarRetirosPrueba() {
+//		listaRetiros.add(new Retiro(2001, 1001, "16/10/2026", "09:00"));
+//		listaRetiros.add(new Retiro(2002, 1002, "17/10/2026", "11:30"));
+//		listaRetiros.add(new Retiro(2003, 1003, "18/10/2026", "15:00"));
 
-		Matricula.contadorMatricula = 1004;
+		
 	}
 }

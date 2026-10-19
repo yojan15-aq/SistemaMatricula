@@ -40,8 +40,8 @@ public class FrmRetiro extends JFrame implements ActionListener {
 	private JButton btnLimpiar;
 	private DefaultTableModel tmodel;
 
-	private List<Retiro> listaRetiros = new ArrayList<>();
 //	private int contador = 2001;
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -160,7 +160,12 @@ public class FrmRetiro extends JFrame implements ActionListener {
 		contentPane.add(btnLimpiar);
 
 		txtNumRetiro.setText(Retiro.contador + "");
-		generarRetirosPrueba();
+
+		
+		for (Retiro r : FrmMenu.listaRetiros) {
+			tmodel.addRow(new Object[] {r.getNumRetiro(), r.getNumMatricula(), r.getFecha(), r.getHora()});
+		}
+//		Retiro.contador = 2004;
 	}
 
 	@Override
@@ -186,13 +191,17 @@ public class FrmRetiro extends JFrame implements ActionListener {
 			Mensaje.dialog(this, "La matricula no existe");
 			return;
 		}
+		if (FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(matchMatricula.getCodAlumno()).getEstado() == 2) {
+			Mensaje.dialog(this, "Ya esta retirado");
+			return;
+		}
 		
 		FrmMenu.arrAlumnos
 			.buscarAlumnoPorCodigo(matchMatricula.getCodAlumno())
-			.setEstado(2);;
+			.setEstado(2);
 		
 		Retiro r = new Retiro(num, numMatricula);
-		listaRetiros.add(r);
+		FrmMenu.listaRetiros.add(r);
 		tmodel.addRow(new Object[]{num, numMatricula, r.getFecha(), r.getHora()});
 
 		Retiro.contador++;
@@ -201,13 +210,13 @@ public class FrmRetiro extends JFrame implements ActionListener {
 	}
 
 	protected void actionPerformedBtnConsultar(ActionEvent e) {
-		if (listaRetiros.isEmpty()) {
+		if (FrmMenu.listaRetiros.isEmpty()) {
 			Mensaje.dialog(this, "No hay retiros registrados");
 			return;
 		}
 
 		JComboBox<String> cbo = new JComboBox<>();
-		for (Retiro r : listaRetiros) {
+		for (Retiro r : FrmMenu.listaRetiros) {
 			cbo.addItem(r.getNumRetiro() + "");
 		}
 
@@ -215,7 +224,7 @@ public class FrmRetiro extends JFrame implements ActionListener {
 		if (res != JOptionPane.OK_OPTION) return;
 
 		int numSeleccionado = Integer.valueOf(cbo.getSelectedItem() + "");
-		for (Retiro r : listaRetiros) {
+		for (Retiro r : FrmMenu.listaRetiros) {
 			if (r.getNumRetiro() == numSeleccionado) {
 				Mensaje.dialog(this,
 					"N° Retiro: " + r.getNumRetiro() +
@@ -235,7 +244,13 @@ public class FrmRetiro extends JFrame implements ActionListener {
 		}
 
 		if (Mensaje.confirmar(this, "¿Eliminar este retiro?")) {
-			listaRetiros.remove(rowIndex);
+			FrmMenu.arrAlumnos
+			.buscarAlumnoPorCodigo(FrmMenu.listaMatriculas.get(rowIndex).getCodAlumno())
+			.setEstado(1);
+			FrmMenu.listaRetiros.remove(rowIndex);
+			
+			
+			
 			tmodel.removeRow(rowIndex);
 			limpiarCampos();
 		}
@@ -243,19 +258,7 @@ public class FrmRetiro extends JFrame implements ActionListener {
 
 	private void limpiarCampos() {
 		txtNumRetiro.setText(Retiro.contador + "");
-//		cboNumMatricula.setText("");
-
 	}
 
-	private void generarRetirosPrueba() {
-		listaRetiros.add(new Retiro(2001, 1001, "16/10/2026", "09:00"));
-		listaRetiros.add(new Retiro(2002, 1002, "17/10/2026", "11:30"));
-		listaRetiros.add(new Retiro(2003, 1003, "18/10/2026", "15:00"));
-
-		for (Retiro r : listaRetiros) {
-			tmodel.addRow(new Object[] {r.getNumRetiro(), r.getNumMatricula(), r.getFecha(), r.getHora()});
-		}
-		Retiro.contador = 2004;
-		txtNumRetiro.setText(Retiro.contador + "");
-	}
+	
 }

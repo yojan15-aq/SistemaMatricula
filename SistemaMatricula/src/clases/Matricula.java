@@ -10,7 +10,7 @@ public class Matricula {
 	private int codCurso;
 	private String fecha;
 	private  String hora;
-	public static int contadorMatricula = 1001;
+	public static int contador = 2001;
 	
 	//CONSTRUCTOR
 	public Matricula(int numMatricula, int codAlumno, int codCurso, String fecha, String hora) {

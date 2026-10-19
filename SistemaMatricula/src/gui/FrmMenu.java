@@ -26,6 +26,7 @@ public class FrmMenu extends JFrame {
 	public static ArrayCursos arrCursos = new ArrayCursos();
 	public static List<Matricula> listaMatriculas = new ArrayList<>();
 	public static List<Retiro> listaRetiros = new ArrayList<>();
+	List<String[]> sdfsdf= new ArrayList<>();
 
     public FrmMenu() {
         setTitle("Sistema de Matrícula");

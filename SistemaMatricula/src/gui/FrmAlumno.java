@@ -72,7 +72,6 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		// Labels
 		lblcodigo = new JLabel("Código");
 		lblcodigo.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		lblcodigo.setForeground(Color.WHITE);
@@ -179,7 +178,6 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		cboEstado.setBounds(10, 339, 189, 27);
 		contentPane.add(cboEstado);
 
-		// Tabla
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(220, 20, 520, 340);
 		contentPane.add(scrollPane);
@@ -202,7 +200,6 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		tblAlumnos.getTableHeader().setForeground(Color.WHITE);
 		scrollPane.setViewportView(tblAlumnos);
 
-		// Botones
 		btnAdicionar = new JButton("Adicionar");
 		btnAdicionar.setBackground(new Color(46, 125, 50));
 		btnAdicionar.setForeground(Color.WHITE);
@@ -244,15 +241,9 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == btnConsultar) {
-			actionPerformedBtnConsultar(e);
-		}
-		if (e.getSource() == btnEliminar) {
-			actionPerformedBtnEliminar(e);
-		}
-		if (e.getSource() == btnAdicionar) {
-			actionPerformedBtnAdicionar(e);
-		}
+		if (e.getSource() == btnConsultar) actionPerformedBtnConsultar(e);
+		if (e.getSource() == btnEliminar) actionPerformedBtnEliminar(e);
+		if (e.getSource() == btnAdicionar) actionPerformedBtnAdicionar(e);
 	}
 
 	protected void actionPerformedBtnAdicionar(ActionEvent e) {
@@ -263,6 +254,7 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		FrmMenu.arrAlumnos.mostrarEnTabla(tmodel);
 		limpiarCampos(true);
 		txtCodAlumno.setText(Alumno.contadorAlumnos + "");
+		FrmMenu.guardarDatos();
 		Mensaje.dialog(this, "Alumno agregado correctamente");
 	}
 
@@ -278,14 +270,13 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 			int codigo = (int) tmodel.getValueAt(rowIndex, 0);
 			FrmMenu.arrAlumnos.removerAlumno(codigo);
 			FrmMenu.arrAlumnos.mostrarEnTabla(tmodel);
+			FrmMenu.guardarDatos();
 		}
 		else Mensaje.dialog(this, "Eliminación cancelada");
 	}
 
 	public void itemStateChanged(ItemEvent e) {
-		if (e.getSource() == btnModificar) {
-			itemStateChangedBtnModificar(e);
-		}
+		if (e.getSource() == btnModificar) itemStateChangedBtnModificar(e);
 	}
 
 	protected void itemStateChangedBtnModificar(ItemEvent e) {
@@ -298,8 +289,7 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 		if (btnModificar.isSelected()) {
 			txtCodAlumno.setEnabled(false);
 			txtDni.setEnabled(false);
-			cboEstado.setEditable(true);
-			cboEstado.setEnabled(true);
+			cboEstado.setEnabled(false);
 			txtCodAlumno.setText(tblAlumnos.getValueAt(rowIndex, 0) + "");
 			txtNombres.setText(tblAlumnos.getValueAt(rowIndex, 1) + "");
 			txtApellidos.setText(tblAlumnos.getValueAt(rowIndex, 2) + "");
@@ -314,9 +304,9 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 			txtCodAlumno.setEnabled(true);
 			txtDni.setEnabled(true);
 			cboEstado.setEnabled(false);
-			cboEstado.setEditable(false);
 			FrmMenu.arrAlumnos.mostrarEnTabla(tmodel);
 			limpiarCampos(false);
+			FrmMenu.guardarDatos();
 		}
 	}
 
@@ -384,5 +374,4 @@ public class FrmAlumno extends JFrame implements ActionListener, ItemListener {
 				"\nCelular: " + a.getCelular() +
 				"\nEstado: " + FrmMenu.arrAlumnos.EstadoToText(a.getEstado()));
 	}
-
 }

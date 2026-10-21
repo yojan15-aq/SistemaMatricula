@@ -16,6 +16,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.BorderFactory;
 import clases.Alumno;
 import clases.Curso;
+import clases.Matricula;
+import clases.Retiro;
 
 
 public class FrmConsulta extends JFrame implements ActionListener {
@@ -89,52 +91,79 @@ public class FrmConsulta extends JFrame implements ActionListener {
 	}
 
 	private void buscar() {
-		String codigoStr = txtCodigo.getText().trim();
-		if (codigoStr.isEmpty()) {
-			txtResultado.setText("Ingrese un código para buscar.");
-			return;
+	
+		    String codigoStr = txtCodigo.getText().trim();
+		    if (codigoStr.isEmpty()) {
+		        txtResultado.setText("Ingrese un código para buscar.");
+		        return;
+		    }
+
+		    try {
+		        int codigo = Integer.parseInt(codigoStr);
+		        StringBuilder resultado = new StringBuilder();
+
+		        // 1. Buscar Alumno
+		        Alumno alumno = FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(codigo);
+		        if (alumno != null) {
+		            resultado.append("=== ALUMNO ===\n");
+		            resultado.append("Código    : ").append(alumno.getCodAlumno()).append("\n");
+		            resultado.append("Nombres   : ").append(alumno.getNombres()).append("\n");
+		            resultado.append("Apellidos : ").append(alumno.getApellidos()).append("\n");
+		            resultado.append("DNI       : ").append(alumno.getDni()).append("\n");
+		            resultado.append("Edad      : ").append(alumno.getEdad()).append("\n");
+		            resultado.append("Celular   : ").append(alumno.getCelular()).append("\n");
+		            resultado.append("Estado    : ").append(FrmMenu.arrAlumnos.EstadoToText(alumno.getEstado())).append("\n\n");
+		        }
+
+		        // 2. Buscar Curso
+		        Curso curso = FrmMenu.arrCursos.buscarCursoPorCodigo(codigo);
+		        if (curso != null) {
+		            resultado.append("=== CURSO ===\n");
+		            resultado.append("Código     : ").append(curso.getCodCurso()).append("\n");
+		            resultado.append("Asignatura : ").append(curso.getAsignatura()).append("\n");
+		            resultado.append("Ciclo      : ").append(FrmMenu.arrCursos.cicloToText(curso.getCiclo())).append("\n");
+		            resultado.append("Créditos   : ").append(curso.getCreditos()).append("\n");
+		            resultado.append("Horas      : ").append(curso.getHoras()).append("\n\n");
+		        }
+
+		        // 3. Buscar Matrícula
+		        for (Matricula m : FrmMenu.listaMatriculas) {
+		            if (m.getNumMatricula() == codigo) {
+		                resultado.append("=== MATRÍCULA ===\n");
+		                resultado.append("N° Matrícula  : ").append(m.getNumMatricula()).append("\n");
+		                resultado.append("Código Alumno : ").append(m.getCodAlumno()).append("\n");
+		                resultado.append("Código Curso  : ").append(m.getCodCurso()).append("\n");
+		                resultado.append("Fecha         : ").append(m.getFecha()).append("\n");
+		                resultado.append("Hora          : ").append(m.getHora()).append("\n\n");
+		                break;
+		            }
+		        }
+
+		        // 4. Buscar Retiro
+		        if (FrmMenu.listaRetiros != null) {
+		            for (Retiro r : FrmMenu.listaRetiros) {
+		                if (r.getNumRetiro() == codigo) {
+		                    resultado.append("=== RETIRO ===\n");
+		                    resultado.append("N° Retiro    : ").append(r.getNumRetiro()).append("\n");
+		                    resultado.append("N° Matrícula : ").append(r.getNumMatricula()).append("\n");
+		                    resultado.append("Fecha        : ").append(r.getFecha()).append("\n");
+		                    resultado.append("Hora         : ").append(r.getHora()).append("\n\n");
+		                    break;
+		                }
+		            }
+		        }
+
+		        if (resultado.length() == 0) {
+		            txtResultado.setText("No se encontró información para el código: " + codigo);
+		        } else {
+		            txtResultado.setText(resultado.toString());
+		        }
+
+		    } catch (NumberFormatException ex) {
+		        txtResultado.setText("El código debe ser numérico.");
+		    }
 		}
-
-		try {
-			int codigo = Integer.parseInt(codigoStr);
-
-			// Buscar alumno
-			Alumno alumno = FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(codigo);
-			if (alumno != null) {
-				String estado = FrmMenu.arrAlumnos.EstadoToText(alumno.getEstado());
-				txtResultado.setText(
-					"=== ALUMNO ===\n" +
-					"Código: " + alumno.getCodAlumno() + "\n" +
-					"Nombres: " + alumno.getNombres() + "\n" +
-					"Apellidos: " + alumno.getApellidos() + "\n" +
-					"DNI: " + alumno.getDni() + "\n" +
-					"Edad: " + alumno.getEdad() + "\n" +
-					"Celular: " + alumno.getCelular() + "\n" +
-					"Estado: " + estado
-				);
-				return;
-			}
-
-			// Buscar curso
-			Curso curso = FrmMenu.arrCursos.buscarCursoPorCodigo(codigo);
-			if (curso != null) {
-				txtResultado.setText(
-					"=== CURSO ===\n" +
-					"Código: " + curso.getCodCurso() + "\n" +
-					"Asignatura: " + curso.getAsignatura() + "\n" +
-					"Ciclo: " + FrmMenu.arrCursos.cicloToText(curso.getCiclo()) + "\n" +
-					"Créditos: " + curso.getCreditos() + "\n" +
-					"Horas: " + curso.getHoras()
-				);
-				return;
-			}
-
-			txtResultado.setText("No se encontró información para el código: " + codigo);
-
-		} catch (NumberFormatException ex) {
-			txtResultado.setText("El código debe ser numérico.");
-		}
-	}
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> new FrmConsulta().setVisible(true));

@@ -31,9 +31,9 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 	private JLabel lblNumMatricula;
 	private JTextField txtNumMatricula;
 	private JLabel lblCodAlum;
-	private JComboBox cboCodAlum;
+	private JComboBox<String> cboCodAlum;
 	private JLabel lblCodCurso;
-	private JComboBox cboCodCurso;
+	private JComboBox<String> cboCodCurso;
 	private JTable tblMatriculas;
 	private JButton btnAdicionar;
 	private JButton btnConsultar;
@@ -90,8 +90,8 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 		lblCodAlum.setBounds(10, 60, 189, 27);
 		contentPane.add(lblCodAlum);
 
-		cboCodAlum = new JComboBox();
-		cboCodAlum.setModel(new DefaultComboBoxModel(FrmMenu.arrAlumnos.getArrayCodAlumnos()));
+		cboCodAlum = new JComboBox<>();
+		cboCodAlum.setModel(new DefaultComboBoxModel<>(FrmMenu.arrAlumnos.getArrayCodAlumnos()));
 		cboCodAlum.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		cboCodAlum.setBackground(new Color(55, 55, 60));
 		cboCodAlum.setForeground(Color.WHITE);
@@ -105,8 +105,8 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 		lblCodCurso.setBounds(10, 115, 189, 27);
 		contentPane.add(lblCodCurso);
 
-		cboCodCurso = new JComboBox();
-		cboCodCurso.setModel(new DefaultComboBoxModel(FrmMenu.arrCursos.getArrayCodCursos()));
+		cboCodCurso = new JComboBox<>();
+		cboCodCurso.setModel(new DefaultComboBoxModel<>(FrmMenu.arrCursos.getArrayCodCursos()));
 		cboCodCurso.setFont(new Font("Segoe UI", Font.PLAIN, 12));
 		cboCodCurso.setBackground(new Color(55, 55, 60));
 		cboCodCurso.setForeground(Color.WHITE);
@@ -230,6 +230,7 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 		
 		Matricula.contador++;
 		txtNumMatricula.setText(Matricula.contador + "");
+		FrmMenu.guardarDatos();
 		Mensaje.dialog(this, "Matrícula registrada correctamente");
 	}
 
@@ -279,6 +280,7 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 			FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(codAlumn).setEstado(0);
 			tmodel.removeRow(rowIndex);
 			limpiarCampos();
+			FrmMenu.guardarDatos();
 		}
 	}
 
@@ -320,6 +322,7 @@ public class FrmMatricula extends JFrame implements ActionListener, ItemListener
 			txtNumMatricula.setEnabled(true);
 			cboCodAlum.setEnabled(true);
 			cboCodAlum.setEnabled(true);
+			FrmMenu.guardarDatos();
 			
 //					
 		}

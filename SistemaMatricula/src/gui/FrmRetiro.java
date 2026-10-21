@@ -29,10 +29,6 @@ public class FrmRetiro extends JFrame implements ActionListener {
 	private JTextField txtNumRetiro;
 	private JLabel lblNumMatricula;
 	private JTextField txtNumMatricula;
-	private JLabel lblFecha;
-	private JTextField txtFecha;
-	private JLabel lblHora;
-	private JTextField txtHora;
 	private JTable tblRetiros;
 	private JButton btnAdicionar;
 	private JButton btnConsultar;
@@ -40,7 +36,7 @@ public class FrmRetiro extends JFrame implements ActionListener {
 	private JButton btnLimpiar;
 	private DefaultTableModel tmodel;
 
-	private int contador = 2001;
+//	private int contador = 2001;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
@@ -93,36 +89,6 @@ public class FrmRetiro extends JFrame implements ActionListener {
 		txtNumMatricula.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
 		txtNumMatricula.setBounds(10, 88, 189, 27);
 		contentPane.add(txtNumMatricula);
-
-		lblFecha = new JLabel("Fecha");
-		lblFecha.setFont(new Font("Segoe UI", Font.BOLD, 15));
-		lblFecha.setForeground(Color.WHITE);
-		lblFecha.setBounds(10, 113, 189, 27);
-		contentPane.add(lblFecha);
-
-		txtFecha = new JTextField();
-		txtFecha.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		txtFecha.setBackground(new Color(55, 55, 60));
-		txtFecha.setForeground(Color.WHITE);
-		txtFecha.setCaretColor(Color.WHITE);
-		txtFecha.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
-		txtFecha.setBounds(10, 137, 189, 27);
-		contentPane.add(txtFecha);
-
-		lblHora = new JLabel("Hora");
-		lblHora.setFont(new Font("Segoe UI", Font.BOLD, 15));
-		lblHora.setForeground(Color.WHITE);
-		lblHora.setBounds(10, 164, 189, 27);
-		contentPane.add(lblHora);
-
-		txtHora = new JTextField();
-		txtHora.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-		txtHora.setBackground(new Color(55, 55, 60));
-		txtHora.setForeground(Color.WHITE);
-		txtHora.setCaretColor(Color.WHITE);
-		txtHora.setBorder(BorderFactory.createLineBorder(new Color(80, 80, 85)));
-		txtHora.setBounds(10, 187, 189, 27);
-		contentPane.add(txtHora);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(220, 20, 520, 340);
@@ -191,10 +157,10 @@ public class FrmRetiro extends JFrame implements ActionListener {
 				tmodel.addRow(new Object[]{r.getNumRetiro(), r.getNumMatricula(), r.getFecha(), r.getHora()});
 			}
 			if (!FrmMenu.listaRetiros.isEmpty()) {
-				contador = FrmMenu.listaRetiros.get(FrmMenu.listaRetiros.size() - 1).getNumRetiro() + 1;
+				Retiro.contador = FrmMenu.listaRetiros.get(FrmMenu.listaRetiros.size() - 1).getNumRetiro() + 1;
 			}
 		}
-		txtNumRetiro.setText(contador + "");
+		txtNumRetiro.setText(Retiro.contador + "");
 	}
 
 	@Override
@@ -207,10 +173,10 @@ public class FrmRetiro extends JFrame implements ActionListener {
 
 	protected void actionPerformedBtnAdicionar(ActionEvent e) {
 		String numMatriculaStr = txtNumMatricula.getText().trim();
-		String fecha = txtFecha.getText().trim();
-		String hora = txtHora.getText().trim();
+//		String fecha = txtFecha.getText().trim();
+//		String hora = txtHora.getText().trim();
 
-		if (numMatriculaStr.isEmpty() || fecha.isEmpty() || hora.isEmpty()) {
+		if (numMatriculaStr.isEmpty()) {
 			Mensaje.dialog(this, "Complete todos los campos");
 			return;
 		}
@@ -235,10 +201,18 @@ public class FrmRetiro extends JFrame implements ActionListener {
 			return;
 		}
 
-		Retiro nuevo = new Retiro(contador, numMatricula, fecha, hora);
+		Retiro nuevo = new Retiro(Retiro.contador, numMatricula);
 		FrmMenu.listaRetiros.add(nuevo);
-		tmodel.addRow(new Object[]{contador, numMatricula, fecha, hora});
-		contador++;
+		Matricula ma = FrmMenu.listaMatriculas.stream()
+			.filter(m -> m.getNumMatricula() == numMatricula)
+			.findFirst().orElse(null);
+		ma.getCodAlumno();
+		FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(ma.getCodAlumno()).setEstado(2);
+		FrmMenu.listaMatriculas.remove(ma);
+		
+		
+		tmodel.addRow(new Object[]{Retiro.contador, numMatricula, nuevo.getFecha(), nuevo.getHora()});
+		Retiro.contador++;
 		limpiarCampos();
 		FrmMenu.guardarDatos();
 		Mensaje.dialog(this, "Retiro registrado correctamente");
@@ -280,17 +254,23 @@ public class FrmRetiro extends JFrame implements ActionListener {
 
 		if (Mensaje.confirmar(this, "¿Eliminar este retiro?")) {
 			int num = (int) tmodel.getValueAt(rowIndex, 0);
+			int numMatricula = (int) tmodel.getValueAt(rowIndex, 1);
 			FrmMenu.listaRetiros.removeIf(r -> r.getNumRetiro() == num);
 			tmodel.removeRow(rowIndex);
 			FrmMenu.guardarDatos();
+			Matricula ma = FrmMenu.listaMatriculas.stream()
+					.filter(m -> m.getNumMatricula() == numMatricula)
+					.findFirst().orElse(null);
+				ma.getCodAlumno();
+				FrmMenu.arrAlumnos.buscarAlumnoPorCodigo(ma.getCodAlumno()).setEstado(0);
 			limpiarCampos();
 		}
 	}
 
 	private void limpiarCampos() {
-		txtNumRetiro.setText(contador + "");
+		txtNumRetiro.setText(Retiro.contador + "");
 		txtNumMatricula.setText("");
-		txtFecha.setText("");
-		txtHora.setText("");
+//		txtFecha.setText("");
+//		txtHora.setText("");
 	}
 }

@@ -8,7 +8,7 @@ public class Retiro {
 	private int numMatricula;
 	private String fecha;
 	private  String hora;
-	public static int contador = 2001;
+	public static int contador = 3001;
 	
 	//CONSTRUCTOR
 	public Retiro(int numRetiro, int numMatricula, String fecha, String hora) {

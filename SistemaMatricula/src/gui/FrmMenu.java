@@ -74,6 +74,16 @@ public class FrmMenu extends JFrame {
 
         // Cargar datos desde archivos
         cargarDatos();
+        if (arrAlumnos.cantidadAlumnos() > 0) {
+        	int lastIndex = arrAlumnos.getArrayCodAlumnos().length - 1;
+        	Alumno.contadorAlumnos = Integer.valueOf(arrAlumnos.getArrayCodAlumnos()[lastIndex]) + 1;
+        }
+        if (listaMatriculas.size() > 0) {
+        	Matricula.contador = listaMatriculas.getLast().getNumMatricula() + 1;
+        }
+        if (listaRetiros.size() > 0) {
+        	Retiro.contador = listaRetiros.getLast().getNumRetiro() + 1;
+        }
 
         // Solo generar datos de prueba si no hay datos cargados
         if (arrAlumnos.cantidadAlumnos() == 0) {
@@ -128,7 +138,7 @@ public class FrmMenu extends JFrame {
         // Alumnos
         List<Alumno> listaA = new ArrayList<>();
         for (int i = 0; i < arrAlumnos.cantidadAlumnos(); i++) {
-            listaA.add(arrAlumnos.obtenerAlumno(i));
+            listaA.add(arrAlumnos.obtenerAlumno( i));
         }
         Archivo.guardarAlumnos(listaA, "alumnos.txt");
 
